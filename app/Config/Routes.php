@@ -46,7 +46,12 @@ $routes->get('dashboard', [Dashboard::class, 'index']);
  * Usuários
  * --------------------------------------------------------------------
  */
- $routes->get('usuarios', [Usuario::class, 'index']);
+
+$routes->group('usuarios', static function ($routes) {
+    $routes->get('/', [Usuario::class, 'index']);
+    $routes->get('add', [Usuario::class, 'add']);
+    $routes->get('data', [Usuario::class, 'getUsers']);
+});
 
 /*
  * --------------------------------------------------------------------

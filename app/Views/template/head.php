@@ -1,12 +1,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php // TODO ARRUMAR O TITULO NESSA PAGINA ?>
   <title><?= $title ?></title>
 
   <!--plugins-->
   <link href="<?= base_url('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') ?>" rel="stylesheet">
   <link href="<?= base_url('assets/plugins/metismenu/css/metisMenu.min.css') ?>" rel="stylesheet">
   <link href="<?= base_url('assets/plugins/simplebar/css/simplebar.css') ?>" rel="stylesheet">
+  <link href="<?= base_url('assets/plugins/datatable/css/dataTables.bootstrap5.min.css') ?>" rel="stylesheet">
   <!-- loader-->
   <link href="<?= base_url('assets/css/pace.min.css') ?>" rel="stylesheet">
   <script src="<?= base_url('assets/js/pace.min.js') ?>"></script>
