@@ -20,5 +20,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="<?= base_url('assets/css/main.css') ?>" rel="stylesheet">
   <link href="<?= base_url('assets/css/shadow-theme.css') ?>" rel="stylesheet">
+  <link href="<?= base_url('assets/css/custom.css') ?>" rel="stylesheet">
   <script src="https://kit.fontawesome.com/602fcda4ef.js" crossorigin="anonymous"></script>
 </head>

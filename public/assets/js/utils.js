@@ -29,3 +29,11 @@ function isEmpty (val, zeroIsEmpty = false) {
 
     return false;
 }
+
+function showFullLoading () {
+    $(".full-loading").css("display", "block");
+}
+
+function hideFullLoading() {
+    $(".full-loading").css("display", "none");
+}

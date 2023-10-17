@@ -51,6 +51,17 @@ $routes->group('usuarios', static function ($routes) {
     $routes->get('/', [Usuario::class, 'index']);
     $routes->get('add', [Usuario::class, 'add']);
     $routes->get('data', [Usuario::class, 'getUsers']);
+    $routes->post('create', [Usuario::class, 'createUser']);
+});
+
+/*
+ * --------------------------------------------------------------------
+ * Erros
+ * --------------------------------------------------------------------
+ */
+
+$routes->group('errors', static function ($routes) {
+    $routes->get('404', [Error::class, 'error404']);
 });
 
 /*

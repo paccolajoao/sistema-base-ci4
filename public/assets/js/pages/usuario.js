@@ -26,3 +26,25 @@ $("#btnFiltrarUsuarios").on("click", function () {
   $("#dt_user").DataTable().ajax.reload();
   $("#btnFecharFiltrarUsuarios").trigger("click");
 });
+
+$("#btnSalvarNovoUsuario").on("click", function () {
+  showFullLoading();
+  let data = $('form').serializeArray();
+  var request = $.ajax({
+    url: "create",
+    method: "POST",
+    data: data
+  });
+
+  request.done(function (msg) {
+    let ret = JSON.parse(msg);
+    if (ret.msg === 'success') location.href = 'usuarios/';
+    else console.log(ret.error);
+    hideFullLoading();
+  });
+
+  request.fail(function (jqXHR, textStatus) {
+    alert("Request failed: " + textStatus);
+    hideFullLoading();
+  });
+});

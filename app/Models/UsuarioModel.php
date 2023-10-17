@@ -12,6 +12,8 @@ class UsuarioModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType = 'object';
     protected $useSoftDeletes = false; // true, se eu quiser mostrar apenas os usuários ativos
+    protected $protectFields    = true;
+    protected $allowedFields    = ['username', 'password', 'name', 'email', 'status'];
 
     // Dates
     protected $useTimestamps = true;
@@ -36,5 +38,9 @@ class UsuarioModel extends Model
     protected $afterFind = [];
     protected $beforeDelete = [];
     protected $afterDelete = [];
+
+    public function createUser($data) {
+        $this->insert($data);
+    }
 
 }
