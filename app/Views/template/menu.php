@@ -26,6 +26,12 @@
                     <div class="menu-title">Usuários</div>
                 </a>
             </li>
+            <li>
+                <a href="<?= base_url('desenvolvimento') ?>">
+                    <div class="parent-icon"><i class="fa-solid fa-code"></i></i></div>
+                    <div class="menu-title">Development</div>
+                </a>
+            </li>
         </ul>
     </div>
     <!-- End Menu Lateral -->

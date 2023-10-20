@@ -30,10 +30,55 @@ function isEmpty (val, zeroIsEmpty = false) {
     return false;
 }
 
+/**
+ * LOADING
+ */
 function showFullLoading () {
     $(".full-loading").css("display", "block");
 }
 
-function hideFullLoading() {
+function hideFullLoading () {
     $(".full-loading").css("display", "none");
+}
+
+/**
+ * DataTable inicializa o datatable
+ * @param idTable
+ * @param urlAjax
+ * @param filterParams
+ * @returns {*|jQuery}
+ */
+function initDataTable (idTable, urlAjax, filterParams = {}) {
+    return $('#' + idTable).DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json',
+        },
+        pageLength: 25,
+        order: [[1, 'asc']],
+        processing: true,
+        deferRender: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'excel', 'csv',
+            {
+                extend: 'pdf',
+                orientation: 'landscape',
+                pageSize: 'A4'
+            }
+        ],
+        ajax: {
+            url: urlAjax,
+            data: filterParams
+        }
+    });
+}
+
+/**
+ * Atualiza o Data Table na tela
+ * @param table
+ */
+function refreshDataTable (table) {
+    table.clear();
+    table.ajax.reload();
+    table.draw();
 }

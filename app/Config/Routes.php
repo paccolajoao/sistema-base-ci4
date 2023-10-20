@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Controllers\Dashboard;
+use App\Controllers\Desenvolvimento;
 use App\Controllers\Usuario;
 
 // Create a new instance of our RouteCollection class.
@@ -40,6 +41,19 @@ $routes->set404Override();
  */
 $routes->get('/', [Dashboard::class, 'index']);
 $routes->get('dashboard', [Dashboard::class, 'index']);
+
+/*
+ * --------------------------------------------------------------------
+ * Development (Test)
+ * --------------------------------------------------------------------
+ */
+
+$routes->group('desenvolvimento', static function ($routes) {
+    $routes->get('/', [Desenvolvimento::class, 'index']);
+    $routes->get('add', [Desenvolvimento::class, 'add']);
+    $routes->get('data', [Desenvolvimento::class, 'getFuncionarios']);
+    $routes->post('create', [Desenvolvimento::class, 'createUser']);
+});
 
 /*
  * --------------------------------------------------------------------
