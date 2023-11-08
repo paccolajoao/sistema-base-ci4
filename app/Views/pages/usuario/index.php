@@ -35,12 +35,12 @@
             </div>
             <div class="modal-body">
               <div class="col-md-12">
-                <label for="usuarioFiltrar" class="form-label">Usuário</label>
-                <input type="text" class="form-control" id="usuarioFiltrar">
-              </div>
-              <div class="col-md-12">
                 <label for="nomeFiltrar" class="form-label">Nome</label>
                 <input type="text" class="form-control" id="nomeFiltrar">
+              </div>
+              <div class="col-md-12">
+                <label for="usuarioFiltrar" class="form-label">Usuário</label>
+                <input type="text" class="form-control" id="usuarioFiltrar">
               </div>
               <div class="col-md-12">
                 <label for="statusFiltrar" class="form-label">Status</label>

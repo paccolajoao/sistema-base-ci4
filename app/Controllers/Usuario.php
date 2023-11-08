@@ -49,8 +49,16 @@ class Usuario extends BaseController
 
             // Recebo os dados
             $data = $this->validator->getValidated();
+
+            // Salvo a imagem no servidor
+            $img = $this->request->getFile('foto_perfil');
+            if (! $img->hasMoved() && $img->isValid()) {
+                $pathFile = $img->store('user_img');
+            }
+
             $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             $data['status'] = $data['status'] ? 'ATIVO' : 'INATIVO';
+            $data['profilePicture'] = !empty($pathFile) ? $pathFile : '';
             unset($data['pass_conference']);
             try {
                 $this->usuarioModel->createUser($data);
@@ -70,57 +78,33 @@ class Usuario extends BaseController
     public function getUsers()
     {
         if ($this->request->isAJAX()) {
-            $data = [
-                "draw" => $this->request->getGet('draw'),
-                "recordsTotal" => 1,
-                "recordsFiltered" => 1,
-                "data" => []
+            $usuarioFiltrar = $this->request->getVar('usuarioFiltrar');
+            $nomeFiltrar    = $this->request->getVar('nomeFiltrar');
+            $statusFiltrar  = $this->request->getVar('statusFiltrar');
+
+            $filter = [
+                'usuario' => $usuarioFiltrar,
+                'nome' => $nomeFiltrar,
+                'status' => $statusFiltrar
             ];
 
-            $this->usuarioModel
-                 ->select('idUser, name, username, email, active, null as acao');
+            $ret = $this->usuarioModel
+                        ->getUsers($filter);
 
-            $usuarioFiltrar = $this->request->getGet('usuarioFiltrar');
-            $nomeFiltrar = $this->request->getGet('nomeFiltrar');
-            $statusFiltrar = $this->request->getGet('statusFiltrar');
-            $search = trim((string) $this->request->getGet('search')['value']);
-
-            if (!empty($usuarioFiltrar)) {
-                $this->usuarioModel->where('username', $usuarioFiltrar);
-            }
-
-            if (!empty($nomeFiltrar)) {
-                $this->usuarioModel->where('name', $nomeFiltrar);
-            }
-
-            if (in_array($statusFiltrar, ['0', '1'])) {
-                $this->usuarioModel->where('active', $statusFiltrar);
-            }
-
-            if (!empty($search)) {
-                $this->usuarioModel->where("CONCAT(idUser     , ' ', 
-                                                       name       , ' ',
-                                                       username   , ' ',
-                                                       email      , ' ',
-                                                       active     , ' ') LIKE '%{$search}%'");
-            }
-
-            $rows = $this->usuarioModel->findAll();
-
-            $data['recordsTotal'] = count($rows);
-            $data['recordsFiltered'] = count($rows);
-
-            foreach ($rows as $row) {
+            $data['data'] = [];
+            foreach ($ret as $row) {
                 $data['data'][] = [
-                    $row->idUser,
+                    (int)$row->idUser,
                     $row->name,
                     $row->username,
                     $row->email,
-                    ($row->active) ? '<span class="badge bg-success">ATIVO</span>' : '<span class="badge bg-danger">INATIVO</span>',
+                    ($row->active)
+                        ? '<span class="badge bg-success">ATIVO</span>'
+                        : '<span class="badge bg-danger">INATIVO</span>',
                     '<button type="button" class="btn btn-sm btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>'
                 ];
             }
-            return $this->response->setJSON($data);
+            return json_encode($data);
         }
         return view("pages/errors/erro404");
     }

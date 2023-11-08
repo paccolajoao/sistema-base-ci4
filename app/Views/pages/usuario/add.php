@@ -23,7 +23,7 @@
             <div class="card">
                 <div class="card-body p-4">
                     <h5 class="mb-4">Adicionar Usuário</h5>
-                    <form class="row g-3">
+                    <form class="row g-3" id="usuarioData" method="post" enctype="multipart/form-data">
                         <div class="col-md-4">
                             <label for="nome" class="form-label">Nome</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="Nome">
@@ -53,11 +53,11 @@
                         </div>
                         <div class="col-md-3">
                             <label for="foto_perfil" class="form-label">Foto</label>
-                            <input class="form-control" type="file" id="foto_perfil" name="foto_perfil">
+                            <input class="form-control" type="file" id="foto_perfil" name="foto_perfil" accept="image/png,image/jpg,image/jpeg">
                         </div>
                         <div class="col-md-12">
                             <div class="d-md-flex d-grid align-items-center gap-3">
-                                <button type="button" class="btn btn-primary px-4" id="btnSalvarNovoUsuario">Salvar</button>
+                                <button type="submit" class="btn btn-primary px-4">Salvar</button>
                             </div>
                         </div>
                     </form>

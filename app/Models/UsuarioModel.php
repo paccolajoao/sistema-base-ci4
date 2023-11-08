@@ -13,7 +13,7 @@ class UsuarioModel extends Model
     protected $returnType = 'object';
     protected $useSoftDeletes = false; // true, se eu quiser mostrar apenas os usuários ativos
     protected $protectFields    = true;
-    protected $allowedFields    = ['username', 'password', 'name', 'email', 'status'];
+    protected $allowedFields    = ['username', 'password', 'name', 'email', 'status', 'profilePicture'];
 
     // Dates
     protected $useTimestamps = true;
@@ -38,6 +38,31 @@ class UsuarioModel extends Model
     protected $afterFind = [];
     protected $beforeDelete = [];
     protected $afterDelete = [];
+
+    public function getUsers(array $filter) {
+
+        $this->select('idUser,
+                             name,
+                             username,
+                             email,
+                             active, 
+                             null as acao');
+
+        if (!empty($filter['usuario'])) {
+            $this->like('username', $filter['usuario']);
+        }
+
+        if (!empty($filter['nome'])) {
+            $this->like('name', $filter['nome']);
+        }
+
+        if (in_array($filter['status'], ['0', '1'])) {
+            $this->where('active', $filter['status'],);
+        }
+
+        return $this->findAll();
+
+    }
 
     public function createUser($data) {
         $this->insert($data);

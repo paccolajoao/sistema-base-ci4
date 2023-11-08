@@ -62,7 +62,9 @@ class Desenvolvimento extends BaseController
                     $row->departamento,
                     $row->email,
                     $row->telefone,
-                    ($row->active) ? '<span class="badge bg-success">ATIVO</span>' : '<span class="badge bg-danger">INATIVO</span>',
+                    ($row->active)
+                        ? '<span class="badge bg-success">ATIVO</span>'
+                        : '<span class="badge bg-danger">INATIVO</span>',
                     '<button type="button" class="btn btn-sm btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>'
                 ];
             }

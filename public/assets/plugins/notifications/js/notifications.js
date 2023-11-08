@@ -395,27 +395,27 @@ var Lobibox = Lobibox || {};
         },
         default: {
             'class': 'lobibox-notify-default',
-            'title': 'Default',
+            'title': 'Aviso',
             sound: false
         },
         success: {
             'class': 'lobibox-notify-success',
-            'title': 'Success',
+            'title': 'Sucesso',
             sound: 'sound2'
         },
         error: {
             'class': 'lobibox-notify-error',
-            'title': 'Error',
+            'title': 'Erro',
             sound: 'sound4'
         },
         warning: {
             'class': 'lobibox-notify-warning',
-            'title': 'Warning',
+            'title': 'Atenção',
             sound: 'sound5'
         },
         info: {
             'class': 'lobibox-notify-info',
-            'title': 'Information',
+            'title': 'Informação',
             sound: 'sound6'
         },
         icons: {

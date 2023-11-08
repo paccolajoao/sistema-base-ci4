@@ -5,6 +5,7 @@
   <title><?= $title ?></title>
 
   <!--plugins-->
+  <link href="<?= base_url('assets/plugins/notifications/css/lobibox.min.css') ?>" rel="stylesheet">
   <link href="<?= base_url('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') ?>" rel="stylesheet">
   <link href="<?= base_url('assets/plugins/metismenu/css/metisMenu.min.css') ?>" rel="stylesheet">
   <link href="<?= base_url('assets/plugins/simplebar/css/simplebar.css') ?>" rel="stylesheet">

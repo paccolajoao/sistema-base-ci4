@@ -1,46 +1,54 @@
-$(document).ready(function() {
-  $('#dt_user').DataTable({
-    language: {
-      url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/pt-BR.json',
-    },
-    processing: true,
-    serverSide: true,
-    ajax: {
-      url: 'usuarios/data',
-      data: function(d) {
-        const usuarioFiltrar = $("#usuarioFiltrar").val();
-        const nomeFiltrar    = $("#nomeFiltrar").val();
-        const statusFiltrar  = $("#statusFiltrar").val();
+/**
+ * Crio a tabela, seto em uma variavel global e monto a estrutura
+ * no ajax retorno um json e dentro de data coloco os valores
+ */
 
-        return $.extend({}, d, {
-          usuarioFiltrar,
-          nomeFiltrar,
-          statusFiltrar
-        });
-      }
-    }
-  });
+var table = null;
+
+$(document).ready(function() {
+  table = initDataTable (
+      'dt_user',
+      'usuarios/data',
+      {
+        usuarioFiltrar: function() { return $('#usuarioFiltrar').val() },
+        nomeFiltrar:    function() { return $('#nomeFiltrar').val() },
+        statusFiltrar:  function() { return $('#statusFiltrar').val() }
+      });
 });
 
+/**
+ * dou reload no ajax e recebo via json as inputs em outros campos do back end
+ */
 $("#btnFiltrarUsuarios").on("click", function () {
-  $("#dt_user").DataTable().ajax.reload();
+  refreshDataTable(table);
   $("#btnFecharFiltrarUsuarios").trigger("click");
 });
 
-$("#btnSalvarNovoUsuario").on("click", function () {
+$("form#usuarioData").on("submit", function (e) {
+  e.preventDefault();
   showFullLoading();
-  let data = $('form').serializeArray();
+  var formData = new FormData(this);
+
   var request = $.ajax({
     url: "create",
     method: "POST",
-    data: data
+    data: formData,
+    contentType: false,
+    processData: false
   });
 
   request.done(function (msg) {
     let ret = JSON.parse(msg);
-    if (ret.msg === 'success') location.href = 'usuarios/';
-    else console.log(ret.error);
-    hideFullLoading();
+    if (ret.msg === 'success'){
+      success_notification('Sucesso ao criar usuário.');
+      setTimeout(() => {
+        location.href = '/usuarios';
+      }, 3000);
+    }
+    else {
+      error_notification(ret.error);
+      hideFullLoading();
+    }
   });
 
   request.fail(function (jqXHR, textStatus) {

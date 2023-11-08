@@ -42,6 +42,10 @@ function hideFullLoading () {
 }
 
 /**
+ * DATATABLE
+ */
+
+/**
  * DataTable inicializa o datatable
  * @param idTable
  * @param urlAjax
@@ -81,4 +85,50 @@ function refreshDataTable (table) {
     table.clear();
     table.ajax.reload();
     table.draw();
+}
+
+/**
+ * NOTIFICAÇÕES
+ */
+
+/**
+ * Função para splitar o obj da mensagem e retornar todos os erros
+ * por linha
+ * @param a Objeto que será splitado e todos os erros serão trazidos em uma string
+ * @returns {string} String contendo os erros do obj passado como parametro
+ */
+function joinObj(a) {
+    var out = [];
+    Object.values(a).forEach(val => {
+        out.push(val);
+    });
+    return out.join("<br>");
+}
+
+/**
+ *
+ * @param msg
+ */
+function error_notification(msg) {
+    Lobibox.notify('error', {
+        pauseDelayOnHover: true,
+        continueDelayOnInactiveTab: false,
+        position: 'top right',
+        sound: false,
+        rounded: true,
+        icon: 'bi bi-x-circle-fill',
+        msg: joinObj(msg)
+    });
+}
+
+function success_notification(msg) {
+    Lobibox.notify('success', {
+        pauseDelayOnHover: true,
+        continueDelayOnInactiveTab: false,
+        sound: false,
+        rounded: true,
+        position: 'top right',
+        icon: 'bi bi-check-circle-fill',
+        msg: msg
+    });
 }
