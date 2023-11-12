@@ -7,13 +7,13 @@ use CodeIgniter\Model;
 class UsuarioModel extends Model
 {
 
-    protected $table = 'user';
+    protected $table = 'usuario';
     protected $primaryKey = 'idUser';
     protected $useAutoIncrement = true;
     protected $returnType = 'object';
     protected $useSoftDeletes = false; // true, se eu quiser mostrar apenas os usuários ativos
     protected $protectFields    = true;
-    protected $allowedFields    = ['username', 'password', 'name', 'email', 'status', 'profilePicture'];
+    protected $allowedFields    = ['idUser', 'username', 'password', 'name', 'email', 'status', 'profilePicture', 'active'];
 
     // Dates
     protected $useTimestamps = true;
@@ -56,8 +56,13 @@ class UsuarioModel extends Model
             $this->like('name', $filter['nome']);
         }
 
-        if (in_array($filter['status'], ['0', '1'])) {
+        if (!empty($filter['status']) && in_array($filter['status'], ['0', '1'])) {
             $this->where('active', $filter['status'],);
+        }
+
+        if (!empty($filter['idUser'])) {
+            $this->where('idUser', $filter['idUser']);
+            return $this->findAll()[0];
         }
 
         return $this->findAll();
@@ -65,7 +70,7 @@ class UsuarioModel extends Model
     }
 
     public function createUser($data) {
-        $this->insert($data);
+        $this->upsert($data);
     }
 
 }

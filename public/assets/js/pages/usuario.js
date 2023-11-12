@@ -28,9 +28,15 @@ $("form#usuarioData").on("submit", function (e) {
   e.preventDefault();
   showFullLoading();
   var formData = new FormData(this);
+  var urlSendAjax = window.location.origin + "/usuarios/create";
+
+  // Envio o id do usuário para a url
+  if (!isEmpty($("#id_usuario").val(),true)) {
+    urlSendAjax += '/' + $("#id_usuario").val();
+  }
 
   var request = $.ajax({
-    url: "create",
+    url: urlSendAjax,
     method: "POST",
     data: formData,
     contentType: false,
@@ -40,7 +46,7 @@ $("form#usuarioData").on("submit", function (e) {
   request.done(function (msg) {
     let ret = JSON.parse(msg);
     if (ret.msg === 'success'){
-      success_notification('Sucesso ao criar usuário.');
+      success_notification('Sucesso ao criar/editar usuário.');
       setTimeout(() => {
         location.href = '/usuarios';
       }, 3000);
@@ -55,4 +61,9 @@ $("form#usuarioData").on("submit", function (e) {
     alert("Request failed: " + textStatus);
     hideFullLoading();
   });
+});
+
+$(document).on("click", ".editar-usuario", function() {
+  let idUser = $(this).data("id");
+  location.href = 'usuarios/add/' + idUser;
 });

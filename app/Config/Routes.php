@@ -64,8 +64,10 @@ $routes->group('desenvolvimento', static function ($routes) {
 $routes->group('usuarios', static function ($routes) {
     $routes->get('/', [Usuario::class, 'index']);
     $routes->get('add', [Usuario::class, 'add']);
+    $routes->get('add/(:num)', [Usuario::class, 'add']);
     $routes->get('data', [Usuario::class, 'getUsers']);
     $routes->post('create', [Usuario::class, 'createUser']);
+    $routes->post('create/(:num)', [Usuario::class, 'createUser']);
 });
 
 /*

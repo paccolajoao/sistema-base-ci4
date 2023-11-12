@@ -98,6 +98,10 @@ function refreshDataTable (table) {
  * @returns {string} String contendo os erros do obj passado como parametro
  */
 function joinObj(a) {
+    if (typeof a !== 'object') {
+        console.log(a);
+        return 'Erro de requisição. Contate o suporte.';
+    }
     var out = [];
     Object.values(a).forEach(val => {
         out.push(val);
@@ -106,8 +110,8 @@ function joinObj(a) {
 }
 
 /**
- *
- * @param msg
+ * Notificação de erro
+ * @param msg Objeto da mensagem a ser exibido o erro
  */
 function error_notification(msg) {
     Lobibox.notify('error', {
@@ -120,6 +124,11 @@ function error_notification(msg) {
         msg: joinObj(msg)
     });
 }
+
+/**
+ * Notificação de sucesso
+ * @param msg Texto da mensagem de sucesso a ser exibida
+ */
 
 function success_notification(msg) {
     Lobibox.notify('success', {

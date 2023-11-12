@@ -30,19 +30,37 @@ class Usuario extends BaseController
         return view("pages/usuario/index", $data);
     }
 
-    public function add()
+    public function add($idUser = null)
     {
         $data['title'] = ucfirst("adicionar usuário");
+        // se tiver um id de usuário, é editar, então tras os dados na tela
+        if (!empty($idUser)) {
+            $filter = [
+                'idUser' => $idUser
+            ];
+            $data['usuario'] = $this->usuarioModel->getUsers($filter);
+        }
         return view("pages/usuario/add", $data);
     }
 
+    /**
+     * Função para criar ou alterar um usuário
+     * @param $idUser
+     * @return false|string
+     */
 
-    public function createUser()
+    public function createUser($idUser = null)
     {
         if ($this->request->isAJAX()) {
+            // Removo todos os campos que vem vazio
+            array_filter($this->request->getVar());
+
             // Validação
-            if (!$this->validate('userRules')) {
+            if (empty($idUser) && !$this->validate('userRules')) {
                 // The validation failed.
+                $return = ['msg' => 'error', 'error' => $this->validator->getErrors()];
+                return json_encode($return);
+            } else if (!$this->validate('userUpdateRules')){
                 $return = ['msg' => 'error', 'error' => $this->validator->getErrors()];
                 return json_encode($return);
             }
@@ -56,16 +74,38 @@ class Usuario extends BaseController
                 $pathFile = $img->store('user_img');
             }
 
-            $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+            // Se for editar e o password estiver em branco, não altero o password
+            if (!empty($idUser) && empty($data['password'])) {
+                $data['idUser'] = $idUser;
+            } else {
+                $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+            }
+
+            $data['active'] = $data['status'] ? 1 : 0;
             $data['status'] = $data['status'] ? 'ATIVO' : 'INATIVO';
             $data['profilePicture'] = !empty($pathFile) ? $pathFile : '';
             unset($data['pass_conference']);
+
+            // construo o vetor para salvar os logs
+            $logParams = [
+              "guid" => $this->utils->getGUID(),
+              "data" => date("Y-m-d H:i:s"),
+              "controller" => $this->router->controllerName(),
+              "metodo" => $this->router->methodName(),
+              "dados" => json_encode($data),
+              "tabela" => 'usuario',
+              "operacao" => empty($idUser) ? 'i' : 'u'
+            ];
             try {
                 $this->usuarioModel->createUser($data);
+                $logParams['isError'] = false;
                 $return = ['msg' => 'success'];
             } catch (DatabaseException $e) {
+                $logParams['isError'] = true;
+                $logParams['erroTexto'] = $e->getMessage();
                 $return = ['msg' => 'error', 'error' => $e->getMessage()];
             }
+            $this->logs->save($logParams);
             return json_encode($return);
         } else {
             return view("pages/errors/erro404");
@@ -101,7 +141,10 @@ class Usuario extends BaseController
                     ($row->active)
                         ? '<span class="badge bg-success">ATIVO</span>'
                         : '<span class="badge bg-danger">INATIVO</span>',
-                    '<button type="button" class="btn btn-sm btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>'
+                    '
+                        <button type="button" class="btn btn-sm btn-primary editar-usuario" data-id="' . (int)$row->idUser . '"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button type="button" class="btn btn-sm btn-danger excluir-usuario" data-id="' . (int)$row->idUser . '"><i class="fa-solid fa-trash-can"></i></button>
+                    '
                 ];
             }
             return json_encode($data);
