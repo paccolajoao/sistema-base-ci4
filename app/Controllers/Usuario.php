@@ -77,6 +77,7 @@ class Usuario extends BaseController
             // Se for editar e o password estiver em branco, não altero o password
             if (!empty($idUser) && empty($data['password'])) {
                 $data['idUser'] = $idUser;
+                unset($data['password']);
             } else {
                 $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             }
