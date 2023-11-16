@@ -36,7 +36,8 @@ class Usuario extends BaseController
         // se tiver um id de usuário, é editar, então tras os dados na tela
         if (!empty($idUser)) {
             $filter = [
-                'idUser' => $idUser
+                'idUser' => $idUser,
+                'status' => 'all'
             ];
             $data['usuario'] = $this->usuarioModel->getUsers($filter);
         }
@@ -89,7 +90,7 @@ class Usuario extends BaseController
 
             // construo o vetor para salvar os logs
             $logParams = [
-              "guid" => $this->utils->getGUID(),
+              "guid" => getGUID(),
               "data" => date("Y-m-d H:i:s"),
               "controller" => $this->router->controllerName(),
               "metodo" => $this->router->methodName(),
@@ -111,6 +112,46 @@ class Usuario extends BaseController
         } else {
             return view("pages/errors/erro404");
         }
+    }
+
+    /**
+     * Função para deletar um usuário
+     * @param $idUser
+     * @return false|string
+     */
+    public function deleteUser($idUser = null)
+    {
+        if ($this->request->isAJAX()) {
+            // construo o vetor para salvar os logs
+            $logParams = [
+                "guid" => getGUID(),
+                "data" => date("Y-m-d H:i:s"),
+                "controller" => $this->router->controllerName(),
+                "metodo" => $this->router->methodName(),
+                "dados" => $this->getDeletedUser($idUser),
+                "tabela" => 'usuario',
+                "operacao" => 'd'
+            ];
+            try {
+                $this->usuarioModel->deleteUser($idUser);
+                $logParams['isError'] = false;
+                $return = ['msg' => 'success'];
+            } catch (DatabaseException $e) {
+                $logParams['isError'] = true;
+                $logParams['erroTexto'] = $e->getMessage();
+                $return = ['msg' => 'error', 'error' => $e->getMessage()];
+            }
+            $this->logs->save($logParams);
+            return json_encode($return);
+        } else {
+            return view("pages/errors/erro404");
+        }
+    }
+
+    public function getDeletedUser($idUser) {
+        $ret = $this->usuarioModel
+                    ->getUserCompleto($idUser);
+        return json_encode($ret);
     }
 
     /**

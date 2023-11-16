@@ -23,4 +23,5 @@
   <link href="<?= base_url('assets/css/shadow-theme.css') ?>" rel="stylesheet">
   <link href="<?= base_url('assets/css/custom.css') ?>" rel="stylesheet">
   <script src="https://kit.fontawesome.com/602fcda4ef.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>

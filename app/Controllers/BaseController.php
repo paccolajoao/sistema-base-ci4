@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Libraries\Logs;
-use App\Libraries\Utils;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
@@ -58,7 +57,6 @@ abstract class BaseController extends Controller
 
         // Preload any models, libraries, etc, here.
         $this->logs = new Logs();
-        $this->utils = new Utils();
         $this->router = service('router');
         $this->session = \Config\Services::session();
     }

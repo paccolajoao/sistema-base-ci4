@@ -56,8 +56,10 @@ class UsuarioModel extends Model
             $this->like('name', $filter['nome']);
         }
 
-        if (!empty($filter['status']) && in_array($filter['status'], ['0', '1'])) {
-            $this->where('active', $filter['status'],);
+        if ( (!empty($filter['status']) && $filter['status'] != 'all') ||
+             in_array($filter['status'], ['0', '1']))
+        {
+            $this->where('active', $filter['status']);
         }
 
         if (!empty($filter['idUser'])) {
@@ -71,6 +73,17 @@ class UsuarioModel extends Model
 
     public function createUser($data) {
         $this->upsert($data);
+    }
+
+    public function getUserCompleto($idUser) {
+        $this->select();
+        $this->where('idUser', $idUser);
+        return $this->findAll()[0];
+    }
+
+    public function deleteUser($idUser) {
+        $this->where('idUser', $idUser);
+        $this->delete();
     }
 
 }

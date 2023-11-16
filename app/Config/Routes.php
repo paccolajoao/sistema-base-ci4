@@ -68,6 +68,7 @@ $routes->group('usuarios', static function ($routes) {
     $routes->get('data', [Usuario::class, 'getUsers']);
     $routes->post('create', [Usuario::class, 'createUser']);
     $routes->post('create/(:num)', [Usuario::class, 'createUser']);
+    $routes->post('delete/(:num)', [Usuario::class, 'deleteUser']);
 });
 
 /*
