@@ -39,7 +39,7 @@ class UsuarioModel extends Model
     protected $beforeDelete = [];
     protected $afterDelete = [];
 
-    public function getUsers(array $filter) {
+    public function getUsers (array $filter) {
 
         $this->select('idUser,
                              name,
@@ -71,19 +71,33 @@ class UsuarioModel extends Model
 
     }
 
-    public function createUser($data) {
+    public function createUser ($data) {
         $this->upsert($data);
     }
 
-    public function getUserCompleto($idUser) {
+    public function getUserCompleto ($idUser) {
         $this->select();
         $this->where('idUser', $idUser);
         return $this->findAll()[0];
     }
 
-    public function deleteUser($idUser) {
+    public function deleteUser ($idUser) {
         $this->where('idUser', $idUser);
         $this->delete();
+    }
+
+    public function encontrarUsuarioLogin ($dados) {
+        $this->select('idUser, username, password, name, email, profilePicture');
+        $this->where('username', $dados['input_user']);
+        $this->where('active', 1);
+        $ret = $this->findAll();
+
+        if (!empty($ret) && password_verify($dados['input_password'], $ret[0]->password)) {
+            unset($ret[0]->password);
+            return $ret[0];
+        }
+
+        return [];
     }
 
 }

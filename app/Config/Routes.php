@@ -4,6 +4,7 @@ namespace Config;
 
 use App\Controllers\Dashboard;
 use App\Controllers\Desenvolvimento;
+use App\Controllers\Login;
 use App\Controllers\Usuario;
 
 // Create a new instance of our RouteCollection class.
@@ -41,6 +42,16 @@ $routes->set404Override();
  */
 $routes->get('/', [Dashboard::class, 'index']);
 $routes->get('dashboard', [Dashboard::class, 'index']);
+
+/*
+ * --------------------------------------------------------------------
+ * Login Logout
+ * --------------------------------------------------------------------
+ */
+$routes->group('login', static function ($routes) {
+    $routes->get('/', [Login::class, 'index']);
+    $routes->post('realizarlogin', [Login::class, 'realizarLogin']);
+});
 
 /*
  * --------------------------------------------------------------------

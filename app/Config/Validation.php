@@ -51,7 +51,7 @@ class Validation extends BaseConfig
             'rules' => 'required|max_length[50]|min_length[6]|is_unique[usuario.username]',
             'errors' => [
                 'required' => 'O campo usuário é obrigatório.',
-                'max_length' => 'Tamanho máximo do campo usuário é 30 caracteres.',
+                'max_length' => 'Tamanho máximo do campo usuário é 50 caracteres.',
                 'min_length' => 'Tamanho mínimo do campo usuário é 6 caracteres.',
                 'is_unique' => 'Esse usuário já foi cadastrado.'
             ],
@@ -84,7 +84,7 @@ class Validation extends BaseConfig
             'errors' => [
                 'required' => 'O campo nome é obrigatório.',
                 'max_length' => 'Tamanho máximo do campo nome é 100 caracteres.',
-                'min_length' => 'Tamanho mínimo do campo nome é 8 caracteres.'
+                'min_length' => 'Tamanho mínimo do campo nome é 6 caracteres.'
             ],
         ],
         'email' => [
@@ -110,7 +110,7 @@ class Validation extends BaseConfig
             'rules' => 'required|max_length[50]|min_length[6]',
             'errors' => [
                 'required' => 'O campo usuário é obrigatório.',
-                'max_length' => 'Tamanho máximo do campo usuário é 30 caracteres.',
+                'max_length' => 'Tamanho máximo do campo usuário é 50 caracteres.',
                 'min_length' => 'Tamanho mínimo do campo usuário é 6 caracteres.',
                 'is_unique' => 'Esse usuário já foi cadastrado.'
             ],
@@ -143,7 +143,7 @@ class Validation extends BaseConfig
             'errors' => [
                 'required' => 'O campo nome é obrigatório.',
                 'max_length' => 'Tamanho máximo do campo nome é 100 caracteres.',
-                'min_length' => 'Tamanho mínimo do campo nome é 8 caracteres.'
+                'min_length' => 'Tamanho mínimo do campo nome é 6 caracteres.'
             ],
         ],
         'email' => [
@@ -160,6 +160,30 @@ class Validation extends BaseConfig
             'errors' => [
                 'is_image[foto_perfil]' => 'O arquivo inserido não é uma imagem.',
                 'ext_in[foto_perfil,jpge,jpg,png]' => 'Formato da foto não permitido.'
+            ],
+        ]
+    ];
+
+    /**
+     * Login usuario
+     * @var array|array[]
+     */
+
+    public array $loginRules = [
+        'input_user' => [
+            'rules' => 'required|max_length[50]|min_length[6]',
+            'errors' => [
+                'required' => 'O campo usuário é obrigatório.',
+                'max_length' => 'Usuário deve conter no máximo é 50 caracteres.',
+                'min_length' => 'Usuário deve conter no mínimo é 6 caracteres.'
+            ],
+        ],
+        'input_password' => [
+            'rules' => 'required|max_length[30]|min_length[10]',
+            'errors' => [
+                'required' => 'O campo senha é obrigatório.',
+                'max_length' => 'Senha deve conter no máximo 30 caracteres.',
+                'min_length' => 'Senha deve conter no mínimo 10 caracteres.'
             ],
         ]
     ];
