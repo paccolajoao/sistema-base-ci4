@@ -51,6 +51,7 @@ $routes->get('dashboard', [Dashboard::class, 'index']);
 $routes->group('login', static function ($routes) {
     $routes->get('/', [Login::class, 'index']);
     $routes->post('realizarlogin', [Login::class, 'realizarLogin']);
+    $routes->post('logout', [Login::class, 'logout']);
 });
 
 /*

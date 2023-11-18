@@ -13,7 +13,7 @@ class UsuarioModel extends Model
     protected $returnType = 'object';
     protected $useSoftDeletes = false; // true, se eu quiser mostrar apenas os usuários ativos
     protected $protectFields    = true;
-    protected $allowedFields    = ['idUser', 'username', 'password', 'name', 'email', 'status', 'profilePicture', 'active'];
+    protected $allowedFields    = ['idUser', 'username', 'password', 'name', 'email', 'status', 'profilePicture', 'active', 'updated_at'];
 
     // Dates
     protected $useTimestamps = true;

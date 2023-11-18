@@ -38,40 +38,33 @@
     <div class="sidebar-bottom dropdown dropup-center dropup">
         <div class="dropdown-toggle d-flex align-items-center px-3 gap-3 w-100 h-100" data-bs-toggle="dropdown">
             <div class="user-img">
-                <img src="assets/images/avatars/01.png" alt="">
+                <img src="<?=
+                                !empty(session()->get('usuarioLogado')->profilePicture)
+                                ? base_url('assets/img_user/' . session()->get('usuarioLogado')->profilePicture)
+                                : 'assets/images/avatars/user_default.png'
+                          ?>"
+                     alt="">
             </div>
             <div class="user-info">
-                <h5 class="mb-0 user-name">Jhon Maxwell</h5>
-                <p class="mb-0 user-designation">UI Engineer</p>
+                <h5 class="mb-0 user-name"><?= getNomeSobrenomeUsuario(session()->get('usuarioLogado')->name) ?></h5>
+                <p class="mb-0 user-designation">Aqui vai a permissão</p>
             </div>
         </div>
         <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
             account_circle
-          </span><span>Profile</span></a>
+          </span><span>Meu Perfil</span></a>
             </li>
             <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
             tune
-          </span><span>Settings</span></a>
-            </li>
-            <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
-            dashboard
-          </span><span>Dashboard</span></a>
-            </li>
-            <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
-            account_balance
-          </span><span>Earnings</span></a>
-            </li>
-            <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
-            cloud_download
-          </span><span>Downloads</span></a>
+          </span><span>Configurações</span></a>
             </li>
             <li>
                 <div class="dropdown-divider mb-0"></div>
             </li>
-            <li><a class="dropdown-item" href="javascript:;"><span class="material-symbols-outlined me-2">
+            <li><a class="dropdown-item" id="botaoLogout"><span class="material-symbols-outlined me-2">
             logout
-          </span><span>Logout</span></a>
+          </span><span>Sair</span></a>
             </li>
         </ul>
     </div>

@@ -35,3 +35,16 @@ function getGUID(): string
         return $uuid;
     }
 }
+
+/**
+ * Ao passar um nome, retorna a primeira e a ultima palavra concatenados
+ * @param $nomeCompleto
+ * @return string
+ */
+function getNomeSobrenomeUsuario($nomeCompleto) {
+    $array = explode(" ",$nomeCompleto);
+    $first_word = $array[0];
+    $last_word  = $array[count($array)-1];
+
+    return $first_word. ' '.$last_word;
+}

@@ -71,8 +71,9 @@ class Usuario extends BaseController
 
             // Salvo a imagem no servidor
             $img = $this->request->getFile('foto_perfil');
-            if (! $img->hasMoved() && $img->isValid()) {
-                $pathFile = $img->store('user_img');
+            if (!$img->hasMoved() && $img->isValid()) {
+                $fileName = $img->getRandomName();
+                $img->store('../../public/assets/img_user', $fileName);
             }
 
             // Se for editar e o password estiver em branco, não altero o password
@@ -85,7 +86,8 @@ class Usuario extends BaseController
 
             $data['active'] = $data['status'] ? 1 : 0;
             $data['status'] = $data['status'] ? 'ATIVO' : 'INATIVO';
-            $data['profilePicture'] = !empty($pathFile) ? $pathFile : '';
+            $data['updated_at'] = date("Y-m-d H:i:s");
+            $data['profilePicture'] = !empty($fileName) ? $fileName : '';
             unset($data['pass_conference']);
 
             // construo o vetor para salvar os logs

@@ -13,6 +13,10 @@ class Login extends BaseController
         return view("pages/login/login", $data);
     }
 
+    /**
+     * Função que realiza o login no sistema
+     * @return \CodeIgniter\HTTP\RedirectResponse
+     */
     public function realizarLogin() {
 
         // Removo todos os campos que vem vazio
@@ -40,5 +44,13 @@ class Login extends BaseController
         session()->set('usuarioLogado', $usuarioLogado);
         return redirect()->route('/');
 
+    }
+
+    /**
+     * Função para realizar logout do sistema
+     * @return void
+     */
+    public function logout() {
+        session()->destroy();
     }
 }
