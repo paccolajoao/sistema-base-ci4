@@ -27,6 +27,25 @@
                 </a>
             </li>
             <li>
+                <a class="has-arrow" href="javascript:;">
+                    <div class="parent-icon"><i class="fa-solid fa-folder-plus"></i>
+                    </div>
+                    <div class="menu-title">Cadastros</div>
+                </a>
+                <ul>
+                    <li> <a href="icons-line-icons.html"><span class="material-symbols-outlined">arrow_right</span>Clientes</a>
+                    </li>
+                    <li> <a href="icons-boxicons.html"><span class="material-symbols-outlined">arrow_right</span>Estoque</a>
+                    </li>
+                    <li> <a href="icons-feather-icons.html"><span class="material-symbols-outlined">arrow_right</span>Fornecedores</a>
+                    </li>
+                    <li> <a href="<?= base_url('produtos') ?>"><span class="material-symbols-outlined">arrow_right</span>Produtos</a>
+                    </li>
+                    <li> <a href="icons-feather-icons.html"><span class="material-symbols-outlined">arrow_right</span>Serviços</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
                 <a href="<?= base_url('desenvolvimento') ?>">
                     <div class="parent-icon"><i class="fa-solid fa-code"></i></i></div>
                     <div class="menu-title">Development</div>
@@ -47,7 +66,7 @@
             </div>
             <div class="user-info">
                 <h5 class="mb-0 user-name"><?= getNomeSobrenomeUsuario(session()->get('usuarioLogado')->name) ?></h5>
-                <p class="mb-0 user-designation">Aqui vai a permissão</p>
+                <p class="mb-0 user-designation">Aqui vai a permissão Biiz</p>
             </div>
         </div>
         <ul class="dropdown-menu dropdown-menu-end">

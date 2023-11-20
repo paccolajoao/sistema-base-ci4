@@ -168,7 +168,6 @@ class Validation extends BaseConfig
      * Login usuario
      * @var array|array[]
      */
-
     public array $loginRules = [
         'input_user' => [
             'rules' => 'required|max_length[50]|min_length[6]',
@@ -186,5 +185,41 @@ class Validation extends BaseConfig
                 'min_length' => 'Senha deve conter no mínimo 10 caracteres.'
             ],
         ]
+    ];
+
+
+    public array $produtoRules = [
+        'nome' => [
+            'rules' => 'required|max_length[200]|min_length[6]',
+            'errors' => [
+                'required' => 'O campo nome é obrigatório.',
+                'max_length' => 'Tamanho máximo do campo nome é 200 caracteres.',
+                'min_length' => 'Tamanho mínimo do campo nome é 6 caracteres.'
+            ],
+        ],
+        'codigo' => [
+            'rules' => 'permit_empty|max_length[50]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo código é 50 caracteres.'
+            ],
+        ],
+        'ativo' => [
+            'rules' => 'required',
+            'errors' => [
+                'required' => 'O campo status é obrigatório.',
+            ],
+        ],
+        'controla_estoque' => [
+            'rules' => 'required',
+            'errors' => [
+                'required' => 'O campo controla estoque é obrigatório.',
+            ],
+        ],
+        'observacoes' => [
+            'rules' => 'max_length[500]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo observações é 500 caracteres.',
+            ],
+        ],
     ];
 }

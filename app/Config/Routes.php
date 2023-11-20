@@ -5,6 +5,7 @@ namespace Config;
 use App\Controllers\Dashboard;
 use App\Controllers\Desenvolvimento;
 use App\Controllers\Login;
+use App\Controllers\Produto;
 use App\Controllers\Usuario;
 
 // Create a new instance of our RouteCollection class.
@@ -52,6 +53,21 @@ $routes->group('login', static function ($routes) {
     $routes->get('/', [Login::class, 'index']);
     $routes->post('realizarlogin', [Login::class, 'realizarLogin']);
     $routes->post('logout', [Login::class, 'logout']);
+});
+
+/*
+ * --------------------------------------------------------------------
+ * Produtos
+ * --------------------------------------------------------------------
+ */
+$routes->group('produtos', static function ($routes) {
+    $routes->get('/', [Produto::class, 'index']);
+    $routes->get('data', [Produto::class, 'getProdutos']);
+    $routes->get('add', [Produto::class, 'add']);
+    $routes->get('add/(:num)', [Produto::class, 'add']);
+    $routes->post('create', [Produto::class, 'createProduto']);
+    $routes->post('create/(:num)', [Produto::class, 'createProduto']);
+    $routes->post('delete/(:num)', [Produto::class, 'deleteProduto']);
 });
 
 /*

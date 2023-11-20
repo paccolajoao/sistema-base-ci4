@@ -61,7 +61,7 @@ class Usuario extends BaseController
                 // The validation failed.
                 $return = ['msg' => 'error', 'error' => $this->validator->getErrors()];
                 return json_encode($return);
-            } else if (!$this->validate('userUpdateRules')){
+            } else if (!empty($idUser) && !$this->validate('userUpdateRules')){
                 $return = ['msg' => 'error', 'error' => $this->validator->getErrors()];
                 return json_encode($return);
             }

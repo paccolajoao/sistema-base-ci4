@@ -34,7 +34,7 @@
         <div class="col-12 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mx-auto">
             <div class="card border-3">
                 <div class="card-body p-5">
-                    <img src="assets/images/logo-icon.png" class="mb-4" width="45" alt="">
+                    <img src="assets/images/logo_transparente.png" class="mb-4 mx-auto d-block" height="200" alt="">
 
                     <!-- Alertas das mensagens de erro-->
                     <?php if (!empty(session()->getFlashdata('retorno'))): ?>
