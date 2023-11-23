@@ -8,6 +8,10 @@
 <script src="<?= base_url('assets/plugins/datatable/js/dataTables.bootstrap5.min.js') ?>"></script>
 <script src="<?= base_url('assets/plugins/notifications/js/lobibox.min.js') ?>"></script>
 <script src="<?= base_url('assets/plugins/notifications/js/notifications.min.js') ?>"></script>
+<script src="https://kit.fontawesome.com/602fcda4ef.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-mask-plugin@1.14.16/dist/jquery.mask.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="<?= base_url('assets/js/index.js') ?>"></script>
 <!--BS Scripts-->
 <script src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>

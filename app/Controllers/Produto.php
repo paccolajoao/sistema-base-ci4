@@ -24,6 +24,7 @@ class Produto extends BaseController
         // Models
         $this->produtoModel = model('ProdutoModel');
     }
+
     public function index()
     {
         $data['title'] = ucfirst("produtos");

@@ -187,7 +187,10 @@ class Validation extends BaseConfig
         ]
     ];
 
-
+    /**
+     * Produto produtos
+     * @var array|array[]
+     */
     public array $produtoRules = [
         'nome' => [
             'rules' => 'required|max_length[200]|min_length[6]',
@@ -213,6 +216,76 @@ class Validation extends BaseConfig
             'rules' => 'required',
             'errors' => [
                 'required' => 'O campo controla estoque é obrigatório.',
+            ],
+        ],
+        'observacoes' => [
+            'rules' => 'max_length[500]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo observações é 500 caracteres.',
+            ],
+        ],
+    ];
+
+    public array $fornecedorRules = [
+        'cpf_cnpj' => [
+            'rules' => 'required|max_length[18]|min_length[14]|is_unique[fornecedores.cpf_cnpj]',
+            'errors' => [
+                'required' => 'O campo CPF/CNPJ é obrigatório.',
+                'max_length' => 'Tamanho máximo do campo CPF/CNPJ é 18 caracteres.',
+                'min_length' => 'Tamanho mínimo do campo CPF/CNPJ é 14 caracteres.'
+            ],
+        ],
+        'razao_social' => [
+            'rules' => 'required|max_length[200]|min_length[10]',
+            'errors' => [
+                'required' => 'O campo Razão Social é obrigatório.',
+                'max_length' => 'Tamanho máximo do campo Razão Social é 200 caracteres.',
+                'min_length' => 'Tamanho mínimo do campo Razão Social é 10 caracteres.'
+            ],
+        ],
+        'nome_fantasia' => [
+            'rules' => 'permit_empty|max_length[200]|min_length[10]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo Nome Fantasia é 200 caracteres.',
+                'min_length' => 'Tamanho mínimo do campo Nome Fantasia é 10 caracteres.'
+            ],
+        ],
+        'inscricao_municipal' => [
+            'rules' => 'permit_empty|max_length[50]|min_length[8]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo Inscrição Municipal é 200 caracteres.',
+                'min_length' => 'Tamanho mínimo do campo Inscrição Municipal é 6 caracteres.'
+            ],
+        ],
+        'inscricao_estadual' => [
+            'rules' => 'permit_empty|max_length[50]|min_length[8]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo Inscrição Estadual é 200 caracteres.',
+                'min_length' => 'Tamanho mínimo do campo Inscrição Estadual é 6 caracteres.'
+            ],
+        ],
+        'codigo' => [
+            'rules' => 'permit_empty|max_length[50]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo código é 50 caracteres.'
+            ],
+        ],
+        'ativo' => [
+            'rules' => 'required',
+            'errors' => [
+                'required' => 'O campo status é obrigatório.',
+            ],
+        ],
+        'tipo' => [
+            'rules' => 'required',
+            'errors' => [
+                'required' => 'O campo tipo é obrigatório.',
+            ],
+        ],
+        'porte' => [
+            'rules' => 'required',
+            'errors' => [
+                'required' => 'O campo porte é obrigatório.',
             ],
         ],
         'observacoes' => [

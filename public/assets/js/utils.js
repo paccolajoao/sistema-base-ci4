@@ -141,3 +141,59 @@ function success_notification(msg) {
         msg: msg
     });
 }
+
+/**
+ *
+ * FORMATAÇÕES
+ *
+ */
+
+/**
+ * Função que retorna apenas os números de uma string
+ * @param str
+ * @returns {*}
+ */
+function regexOnlyNumbers(str) {
+    if (isEmpty(str,true)) return '';
+    return str.match(/\d+/g).join('');
+}
+
+/**
+ *
+ * SELECT2
+ *
+ */
+
+/**
+ * Função que atribui a um select2 a cidade que foi enviada como parametro <br><br>
+ * params { <br><br>
+ *     url: URL da rota em que deve ser realizada a busca da cidade (default select2/select2Cidades) <br><br>
+ *     ibge: Caso a busca seja por código do IBGE, envie esse parametro <br><br>
+ *     id: Caso a busca seja por id, envie esse parametro <br><br>
+ *     idSelect2: O id do select2 em que a opção selecionada sera inputada <br><br>
+ * }
+ * @param params
+ */
+function setSelect2Cidade(params) {
+    if (isEmpty(params.url)) {
+        params.url = window.location.origin + "/select2/select2Cidades";
+    }
+
+    var request = $.ajax({
+        url: params.url,
+        method: "POST",
+        data: {
+            "ibge": params.ibge
+        }
+    });
+
+    request.done(function (msg) {
+        let ret = JSON.parse(msg);
+        $("#" + params.idSelect2).append(new Option(ret[0].text, ret[0].id, false, true)).trigger("change");
+
+    });
+
+    request.fail(function (jqXHR, textStatus) {
+        alert("Request failed search cidade: " + textStatus);
+    });
+}

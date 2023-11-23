@@ -37,7 +37,7 @@
                     </li>
                     <li> <a href="icons-boxicons.html"><span class="material-symbols-outlined">arrow_right</span>Estoque</a>
                     </li>
-                    <li> <a href="icons-feather-icons.html"><span class="material-symbols-outlined">arrow_right</span>Fornecedores</a>
+                    <li> <a href="<?= base_url('fornecedores') ?>"><span class="material-symbols-outlined">arrow_right</span>Fornecedores</a>
                     </li>
                     <li> <a href="<?= base_url('produtos') ?>"><span class="material-symbols-outlined">arrow_right</span>Produtos</a>
                     </li>

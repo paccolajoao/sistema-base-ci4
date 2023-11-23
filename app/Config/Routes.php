@@ -2,8 +2,10 @@
 
 namespace Config;
 
+use App\Controllers\CreateSelect2;
 use App\Controllers\Dashboard;
 use App\Controllers\Desenvolvimento;
+use App\Controllers\Fornecedor;
 use App\Controllers\Login;
 use App\Controllers\Produto;
 use App\Controllers\Usuario;
@@ -46,6 +48,17 @@ $routes->get('dashboard', [Dashboard::class, 'index']);
 
 /*
  * --------------------------------------------------------------------
+ * Select2
+ * Cria os select2 baseado em queries
+ * --------------------------------------------------------------------
+ */
+$routes->group('select2', static function ($routes) {
+    $routes->get('select2Cidades', [CreateSelect2::class, 'select2Cidades']);
+    $routes->post('select2Cidades', [CreateSelect2::class, 'select2Cidades']);
+});
+
+/*
+ * --------------------------------------------------------------------
  * Login Logout
  * --------------------------------------------------------------------
  */
@@ -68,6 +81,21 @@ $routes->group('produtos', static function ($routes) {
     $routes->post('create', [Produto::class, 'createProduto']);
     $routes->post('create/(:num)', [Produto::class, 'createProduto']);
     $routes->post('delete/(:num)', [Produto::class, 'deleteProduto']);
+});
+
+/*
+ * --------------------------------------------------------------------
+ * Fornecedores
+ * --------------------------------------------------------------------
+ */
+$routes->group('fornecedores', static function ($routes) {
+    $routes->get('/', [Fornecedor::class, 'index']);
+    $routes->get('data', [Fornecedor::class, 'getFornecedores']);
+    $routes->get('add', [Fornecedor::class, 'add']);
+    $routes->get('add/(:num)', [Fornecedor::class, 'add']);
+    $routes->post('create', [Fornecedor::class, 'createFornecedor']);
+    $routes->post('create/(:num)', [Fornecedor::class, 'createFornecedor']);
+    $routes->post('delete/(:num)', [Fornecedor::class, 'deleteFornecedor']);
 });
 
 /*
