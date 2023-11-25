@@ -37,4 +37,20 @@ class CreateSelect2 extends BaseController
         $query = $builder->get()->getResult('array');
         return json_encode($query);
     }
+
+    public function select2UnidadeMedida()
+    {
+        $builder = $this->db->table('unidadesmedida as um');
+        $builder->select('um.idUnidadeMedida as id, 
+                          nome  as text');
+        if (!empty($this->request->getVar('search'))) {
+            $builder->like('um.nome', $this->request->getVar('search'));
+        }
+        if (!empty($this->request->getVar('idUnidadeMedida'))) {
+            $builder->where('um.idUnidadeMedida', $this->request->getVar('idUnidadeMedida'));
+        }
+        $builder->orderBy('um.nome', '');
+        $query = $builder->get()->getResult('array');
+        return json_encode($query);
+    }
 }

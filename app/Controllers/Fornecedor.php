@@ -119,6 +119,7 @@ class Fornecedor extends BaseController
                 "metodo" => $this->router->methodName(),
                 "dados" => json_encode($data),
                 "tabela" => 'fornecedores',
+                "idUsuario" => infoUsuarioLogado()->idUser,
                 "operacao" => empty($idFornecedor) ? 'i' : 'u'
             ];
             try {

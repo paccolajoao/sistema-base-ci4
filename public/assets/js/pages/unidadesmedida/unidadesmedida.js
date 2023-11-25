@@ -8,31 +8,25 @@ var table = null;
 $(document).ready(function () {
     table = initDataTable(
         'dt_default',
-        'fornecedores/data',
+        'unidadesmedida/data',
         {
-            razaoSocialFiltrar: function () {
-                return $('#razaoSocialFiltrar').val()
+            nomeFiltrar: function () {
+                return $('#nomeFiltrar').val()
             },
-            codigoFiltrar: function () {
-                return $('#codigoFiltrar').val()
+            relacionalFiltrar: function () {
+                return $('#relacionalFiltrar').val()
             },
             statusFiltrar: function () {
                 return $('#statusFiltrar').val()
-            },
-            tipoFiltrar: function () {
-                return $('#tipoFiltrar').val()
             }
         });
 
-    $('.cnpj').mask('00.000.000/0000-00', {reverse: true});
-    $('.cep').mask('00000-000');
-    $('.telefone').mask('(00) 000000000');
-
+    $('.quantidade_umbase').mask('#.##0,000000', {reverse: true});
     // Carrego os Select2 da cidade
-    var urlSendAjax = window.location.origin + "/select2/select2Cidades";
-    $( '#cidade' ).select2( {
+    var urlSendAjax = window.location.origin + "/select2/select2UnidadeMedida";
+    $('#UMBase').select2({
         theme: "bootstrap-5",
-        width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
         ajax: {
             url: urlSendAjax,
             dataType: 'json',
@@ -49,7 +43,9 @@ $(document).ready(function () {
             },
             cache: true
         }
-    } );
+    });
+
+    $("#isRelacional").trigger("change");
 });
 
 /**
@@ -60,15 +56,15 @@ $("#btnFiltrar").on("click", function () {
     $("#btnFecharFiltrar").trigger("click");
 });
 
-$("form#fornecedorData").on("submit", function (e) {
+$("form#unidadesMedidaData").on("submit", function (e) {
     e.preventDefault();
     showFullLoading();
     var formData = new FormData(this);
-    var urlSendAjax = window.location.origin + "/fornecedores/create";
+    var urlSendAjax = window.location.origin + "/unidadesmedida/create";
 
     // Envio o id do usuário para a url
-    if (!isEmpty($("#id_fornecedor").val(), true)) {
-        urlSendAjax += '/' + $("#id_fornecedor").val();
+    if (!isEmpty($("#id_unidade_medida").val(), true)) {
+        urlSendAjax += '/' + $("#id_unidade_medida").val();
     }
 
     var request = $.ajax({
@@ -82,9 +78,9 @@ $("form#fornecedorData").on("submit", function (e) {
     request.done(function (msg) {
         let ret = JSON.parse(msg);
         if (ret.msg === 'success') {
-            success_notification('Sucesso ao criar/editar fornecedor.');
+            success_notification('Sucesso ao criar/editar unidade de medida.');
             setTimeout(() => {
-                location.href = '/fornecedores';
+                location.href = '/unidadesmedida';
             }, 3000);
         } else {
             error_notification(ret.error);
@@ -100,13 +96,13 @@ $("form#fornecedorData").on("submit", function (e) {
 
 $(document).on("click", ".editar-registro", function () {
     let idRegistro = $(this).data("id");
-    location.href = 'produtos/add/' + idRegistro;
+    location.href = 'unidadesmedida/add/' + idRegistro;
 });
 
 $(document).on("click", ".excluir-registro", function () {
     let idRegistro = $(this).data("id");
 
-    var urlSendAjax = window.location.origin + "/produtos/delete";
+    var urlSendAjax = window.location.origin + "/unidadesmedida/delete";
 
     // Envio o id do usuário para a url
     if (!isEmpty(idRegistro, true)) {
@@ -152,65 +148,20 @@ $(document).on("click", ".excluir-registro", function () {
     });
 });
 
-/**
- * Máscaras
- */
-
-$("#tipo").change(function () {
-    $("#cpf_cnpj").val('');
-    $("#cpf_cnpj").removeClass('cpf');
-    $("#cpf_cnpj").removeClass('cnpj');
+$("#isRelacional").change(function () {
+    $(".hidden-by-relacional").removeClass('d-block');
+    $(".hidden-by-relacional").removeClass('d-none');
     if ($(this).val() === '1') {
-        $(".label-cpf-cnpj").html('CNPJ');
-        $("#cpf_cnpj").addClass('cnpj');
-        $('.cnpj').mask('00.000.000/0000-00', {reverse: true});
-    } else {
-        $(".label-cpf-cnpj").html('CPF');
-        $("#cpf_cnpj").addClass('cpf');
-        $('.cpf').mask('000.000.000-00', {reverse: true});
-    }
-});
-
-$("#cep_button").click(function () {
-    showFullLoading();
-    let cep = regexOnlyNumbers($("#cep").val());
-    let url = 'https://viacep.com.br/ws/' + cep + '/json/';
-    let urlSendAjaxCidades = window.location.origin + "/select2/select2Cidades";
-
-    if (cep.length === 8) {
-        fetch(url).then(function (response) {
-            return response.json();
-        }).then(function (data) {
-            if (data.erro === true) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "CEP não encontrado!"
-                });
-                hideFullLoading();
-                return false;
-            }
-
-            $("#endereco").val(data.logradouro);
-            $("#bairro").val(data.bairro);
-            $("#complemento").val(data.complemento);
-
-            // Carrego a cidade no Select2
-            let paramsSelect2Cidade = {
-              "ibge": data.ibge,
-              "idSelect2": "cidade"
+        $(".hidden-by-relacional").addClass('d-block');
+        // Carrego a UMBase no Select2
+        if (!isEmpty($("#UMBase").data('umbase'),true)) {
+            let paramsSelect2UM = {
+                "idUM": $("#UMBase").data('umbase'),
+                "idSelect2": "UMBase"
             };
-            setSelect2Cidade(paramsSelect2Cidade);
-
-            hideFullLoading();
-            return true;
-        }).catch(function (err) {
-            console.log('Fetch Error :-S', err);
-            hideFullLoading();
-            return false;
-        });
-
+            setSelect2UM(paramsSelect2UM);
+        }
     } else {
-        hideFullLoading();
+        $(".hidden-by-relacional").addClass('d-none');
     }
 });

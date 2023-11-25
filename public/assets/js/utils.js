@@ -197,3 +197,36 @@ function setSelect2Cidade(params) {
         alert("Request failed search cidade: " + textStatus);
     });
 }
+
+/**
+ * Função que atribui a um select2 a UM que foi enviada como parametro <br><br>
+ * params { <br><br>
+ *     url: URL da rota em que deve ser realizada a busca da UM (default select2/select2UnidadeMedida) <br><br>
+ *     idUM: Caso a busca seja por id, envie esse parametro <br><br>
+ *     idSelect2: O id do select2 em que a opção selecionada sera inputada <br><br>
+ * }
+ * @param params
+ */
+function setSelect2UM(params) {
+    if (isEmpty(params.url)) {
+        params.url = window.location.origin + "/select2/select2UnidadeMedida";
+    }
+
+    var request = $.ajax({
+        url: params.url,
+        method: "POST",
+        data: {
+            "idUnidadeMedida": params.idUM
+        }
+    });
+
+    request.done(function (msg) {
+        let ret = JSON.parse(msg);
+        $("#" + params.idSelect2).append(new Option(ret[0].text, ret[0].id, false, true)).trigger("change");
+
+    });
+
+    request.fail(function (jqXHR, textStatus) {
+        alert("Request failed search cidade: " + textStatus);
+    });
+}

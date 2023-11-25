@@ -43,6 +43,8 @@
                     </li>
                     <li> <a href="icons-feather-icons.html"><span class="material-symbols-outlined">arrow_right</span>Serviços</a>
                     </li>
+                    <li> <a href="<?= base_url('unidadesmedida') ?>"><span class="material-symbols-outlined">arrow_right</span>Unidades de Medida</a>
+                    </li>
                 </ul>
             </li>
             <li>

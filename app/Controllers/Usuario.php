@@ -98,6 +98,7 @@ class Usuario extends BaseController
               "metodo" => $this->router->methodName(),
               "dados" => json_encode($data),
               "tabela" => 'usuario',
+              "idUsuario" => infoUsuarioLogado()->idUser,
               "operacao" => empty($idUser) ? 'i' : 'u'
             ];
             try {
@@ -132,6 +133,7 @@ class Usuario extends BaseController
                 "metodo" => $this->router->methodName(),
                 "dados" => $this->getDeletedUser($idUser),
                 "tabela" => 'usuario',
+                "idUsuario" => infoUsuarioLogado()->idUser,
                 "operacao" => 'd'
             ];
             try {

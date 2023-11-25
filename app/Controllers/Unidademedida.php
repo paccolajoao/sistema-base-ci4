@@ -3,68 +3,62 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\ProdutoModel;
+use App\Models\UnidademedidaModel;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
-class Produto extends BaseController
+class Unidademedida extends BaseController
 {
-    private ProdutoModel $produtoModel;
+    private UnidademedidaModel $unidademedidaModel;
 
-    public function initController(
-        RequestInterface  $request,
-        ResponseInterface $response,
-        LoggerInterface $logger
-    )
+    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
         parent::initController($request, $response, $logger);
+        $this->unidademedidaModel = new UnidademedidaModel();
 
-        // Models
-        $this->produtoModel = model('ProdutoModel');
     }
 
     public function index()
     {
-        $data['title'] = ucfirst("produtos");
-        return view("pages/produtos/index", $data);
+        $data['title'] = ucfirst("unidades de medida");
+        return view("pages/unidadesmedida/index", $data);
     }
 
     /**
-     * [AJAX] Função retorna os produtos filtrados
+     * [AJAX] Função retorna as unidades de medida filtradas
      */
-    public function getProdutos()
+    public function getUnidadesMedida()
     {
         if ($this->request->isAJAX()) {
             $nomeFiltrar = $this->request->getVar('nomeFiltrar');
-            $codigoFiltrar    = $this->request->getVar('codigoFiltrar');
-            $statusFiltrar  = $this->request->getVar('statusFiltrar');
+            $relacionalFiltrar = $this->request->getVar('relacionalFiltrar');
+            $statusFiltrar = $this->request->getVar('statusFiltrar');
 
             $filter = [
                 'nome' => $nomeFiltrar,
-                'codigo' => $codigoFiltrar,
-                'status' => $statusFiltrar
+                'isRelacional' => $relacionalFiltrar,
+                'ativo' => $statusFiltrar
             ];
 
-            $ret = $this->produtoModel
-                        ->getProdutos($filter);
+            $ret = $this->unidademedidaModel
+                ->getUnidadesMedida($filter);
 
             $data['data'] = [];
             foreach ($ret as $row) {
                 $data['data'][] = [
-                    (int)$row->idProduto,
-                    $row->codigo,
+                    (int)$row->idUnidadeMedida,
                     $row->nome,
-                    ($row->controla_estoque)
+                    ($row->isRelacional)
                         ? '<span class="badge bg-success">SIM</span>'
                         : '<span class="badge bg-danger">NÃO</span>',
                     ($row->ativo)
                         ? '<span class="badge bg-success">ATIVO</span>'
                         : '<span class="badge bg-danger">INATIVO</span>',
                     '
-                        <button type="button" class="btn btn-sm btn-primary editar-registro" data-id="' . (int)$row->idProduto . '"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button type="button" class="btn btn-sm btn-danger excluir-registro" data-id="' . (int)$row->idProduto . '"><i class="fa-solid fa-trash-can"></i></button>
+                        <button type="button" class="btn btn-sm btn-primary editar-registro" data-id="' . (int)$row->idUnidadeMedida . '"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button type="button" class="btn btn-sm btn-danger excluir-registro" data-id="' . (int)$row->idUnidadeMedida . '"><i class="fa-solid fa-trash-can"></i></button>
                     '
                 ];
             }
@@ -73,32 +67,29 @@ class Produto extends BaseController
         return view("pages/errors/erro404");
     }
 
-    /**
-     * @param $idProduto
-     * @return string
-     */
-    public function add($idProduto = null)
+    public function add($idUnidadeMedida = null)
     {
-        $data['title'] = ucfirst("adicionar produto");
-        // se tiver um id de usuário, é editar, então tras os dados na tela
-        if (!empty($idProduto)) {
+        $data['title'] = ucfirst("adicionar unidade de medida");
+        // se tiver um id de unidade de medida, é editar, então tras os dados na tela
+        if (!empty($idUnidadeMedida)) {
             $filter = [
-                'idProduto' => $idProduto,
-                'status' => 'all'
+                'idUnidadeMedida' => $idUnidadeMedida,
+                'isRelacional' => 'all',
+                'ativo' => 'all'
             ];
-            $data['produto'] = $this->produtoModel->getProdutos($filter);
+            $data['unidademedida'] = $this->unidademedidaModel->getUnidadesMedida($filter);
         }
-        return view("pages/produtos/add", $data);
+        return view("pages/unidadesmedida/add", $data);
     }
 
-    public function createProduto($idProduto = null)
+    public function createUnidadesMedida($idUnidadeMedida = null)
     {
         if ($this->request->isAJAX()) {
             // Removo todos os campos que vem vazio
             array_filter($this->request->getVar());
 
             // Validação
-            if (!$this->validate('produtoRules')) {
+            if (!$this->validate('unidadeMedidaRules')) {
                 // The validation failed.
                 $return = ['msg' => 'error', 'error' => $this->validator->getErrors()];
                 return json_encode($return);
@@ -108,10 +99,13 @@ class Produto extends BaseController
             $data = $this->validator->getValidated();
 
             //Editar
-            if (!empty($idProduto)) {
-                $data['idProduto'] = $idProduto;
+            if (!empty($idUnidadeMedida)) {
+                $data['idUnidadeMedida'] = $idUnidadeMedida;
             }
             $data['updated_at'] = date("Y-m-d H:i:s");
+            $data['quantidade'] = formataDecimal($data['quantidade']);
+            $data['idUnidadeMedidaBase'] = $data['UMBase'];
+            unset($data['UMBase']);
 
             // construo o vetor para salvar os logs
             $logParams = [
@@ -120,18 +114,18 @@ class Produto extends BaseController
                 "controller" => $this->router->controllerName(),
                 "metodo" => $this->router->methodName(),
                 "dados" => json_encode($data),
-                "tabela" => 'produtos',
+                "tabela" => 'unidadesmedida',
                 "idUsuario" => infoUsuarioLogado()->idUser,
-                "operacao" => empty($idProduto) ? 'i' : 'u'
+                "operacao" => empty($idUnidadeMedida) ? 'i' : 'u'
             ];
-            try {
-                $this->produtoModel->createProduto($data);
+
+            if ($this->unidademedidaModel->createUnidadesMedida($data)) {
                 $logParams['isError'] = false;
                 $return = ['msg' => 'success'];
-            } catch (DatabaseException $e) {
+            } else {
                 $logParams['isError'] = true;
-                $logParams['erroTexto'] = $e->getMessage();
-                $return = ['msg' => 'error', 'error' => $e->getMessage()];
+                $logParams['erroTexto'] = 'Erro ao salvar unidade de medida.';
+                $return = ['msg' => 'error', 'error' => 'Erro ao salvar unidade de medida.'];
             }
             $this->logs->save($logParams);
             return json_encode($return);
@@ -140,7 +134,7 @@ class Produto extends BaseController
         }
     }
 
-    public function deleteProduto($idProduto = null)
+    public function deleteUnidadeMedida($idUnidadeMedida = null)
     {
         if ($this->request->isAJAX()) {
             // construo o vetor para salvar os logs
@@ -149,13 +143,13 @@ class Produto extends BaseController
                 "data" => date("Y-m-d H:i:s"),
                 "controller" => $this->router->controllerName(),
                 "metodo" => $this->router->methodName(),
-                "dados" => $this->getDeletedProduto($idProduto),
-                "tabela" => 'produtos',
+                "dados" => $this->getDeletedUM($idUnidadeMedida),
+                "tabela" => 'unidadesmedida',
                 "idUsuario" => infoUsuarioLogado()->idUser,
                 "operacao" => 'd'
             ];
             try {
-                $this->produtoModel->deleteProduto($idProduto);
+                $this->unidademedidaModel->deleteUnidadeMedida($idUnidadeMedida);
                 $logParams['isError'] = false;
                 $return = ['msg' => 'success'];
             } catch (DatabaseException $e) {
@@ -170,11 +164,10 @@ class Produto extends BaseController
         }
     }
 
-    public function getDeletedProduto($idProduto) {
-        $ret = $this->produtoModel
-                    ->getProdutoCompleto($idProduto);
+    public function getDeletedUM($idUM)
+    {
+        $ret = $this->unidademedidaModel
+            ->getUMCompleto($idUM);
         return json_encode($ret);
     }
 }
-
-

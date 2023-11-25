@@ -8,6 +8,7 @@ use App\Controllers\Desenvolvimento;
 use App\Controllers\Fornecedor;
 use App\Controllers\Login;
 use App\Controllers\Produto;
+use App\Controllers\Unidademedida;
 use App\Controllers\Usuario;
 
 // Create a new instance of our RouteCollection class.
@@ -55,6 +56,8 @@ $routes->get('dashboard', [Dashboard::class, 'index']);
 $routes->group('select2', static function ($routes) {
     $routes->get('select2Cidades', [CreateSelect2::class, 'select2Cidades']);
     $routes->post('select2Cidades', [CreateSelect2::class, 'select2Cidades']);
+    $routes->get('select2UnidadeMedida', [CreateSelect2::class, 'select2UnidadeMedida']);
+    $routes->post('select2UnidadeMedida', [CreateSelect2::class, 'select2UnidadeMedida']);
 });
 
 /*
@@ -96,6 +99,21 @@ $routes->group('fornecedores', static function ($routes) {
     $routes->post('create', [Fornecedor::class, 'createFornecedor']);
     $routes->post('create/(:num)', [Fornecedor::class, 'createFornecedor']);
     $routes->post('delete/(:num)', [Fornecedor::class, 'deleteFornecedor']);
+});
+
+/*
+ * --------------------------------------------------------------------
+ * Unidades de Medida
+ * --------------------------------------------------------------------
+ */
+$routes->group('unidadesmedida', static function ($routes) {
+    $routes->get('/', [Unidademedida::class, 'index']);
+    $routes->get('data', [Unidademedida::class, 'getUnidadesMedida']);
+    $routes->get('add', [Unidademedida::class, 'add']);
+    $routes->get('add/(:num)', [Unidademedida::class, 'add']);
+    $routes->post('create', [Unidademedida::class, 'createUnidadesMedida']);
+    $routes->post('create/(:num)', [Unidademedida::class, 'createUnidadesMedida']);
+    $routes->post('delete/(:num)', [Unidademedida::class, 'deleteUnidadeMedida']);
 });
 
 /*

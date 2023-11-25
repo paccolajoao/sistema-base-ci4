@@ -14,6 +14,15 @@ function isUsuarioLogado()
 }
 
 /**
+ * Retorna a sessão do  usuário logado
+ * @return array|bool|float|int|object|string|null
+ */
+function infoUsuarioLogado()
+{
+    return session()->get('usuarioLogado');
+}
+
+/**
  * Gera um guid unico para ser usado como chave única
  * @return string
  */
@@ -36,6 +45,13 @@ function getGUID(): string
     }
 }
 
+
+/**
+ *
+ * STRINGS
+ *
+ */
+
 /**
  * Ao passar um nome, retorna a primeira e a ultima palavra concatenados
  * @param $nomeCompleto
@@ -47,4 +63,18 @@ function getNomeSobrenomeUsuario($nomeCompleto) {
     $last_word  = $array[count($array)-1];
 
     return $first_word. ' '.$last_word;
+}
+
+/**
+ *
+ * NÚMEROS
+ *
+ */
+/**
+ * @param $num
+ * @return array|string|string[]
+ */
+function formataDecimal($num) {
+    if (empty($num)) return '';
+    return str_replace(",", ".", str_replace(".", "", $num));
 }

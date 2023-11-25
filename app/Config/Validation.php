@@ -295,4 +295,39 @@ class Validation extends BaseConfig
             ],
         ],
     ];
+
+    public array $unidadeMedidaRules = [
+        'nome' => [
+            'rules' => 'required|max_length[50]|min_length[3]',
+            'errors' => [
+                'required' => 'O campo nome é obrigatório.',
+                'max_length' => 'Tamanho máximo do campo nome é 50 caracteres.',
+                'min_length' => 'Tamanho mínimo do campo nome é 3 caracteres.'
+            ],
+        ],
+        'isRelacional' => [
+            'rules' => 'required',
+            'errors' => [
+                'required' => 'O campo relacional é obrigatório.',
+            ],
+        ],
+        'ativo' => [
+            'rules' => 'required',
+            'errors' => [
+                'required' => 'O campo ativo é obrigatório.',
+            ],
+        ],
+        'quantidade' => [
+            'rules' => 'required_with[isRelacional]',
+            'errors' => [
+                'required_with' => 'Caso seja uma unidade de medida relacional, digite a quantidade.'
+            ],
+        ],
+        'UMBase' => [
+            'rules' => 'required_with[isRelacional]',
+            'errors' => [
+                'required_with' => 'Caso seja uma unidade de medida relacional, selecione a Unidade de Medida base.'
+            ],
+        ]
+    ];
 }

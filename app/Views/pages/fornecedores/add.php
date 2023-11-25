@@ -107,12 +107,12 @@
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <label for="cpf_cnpj" class="form-label label-cpf-cnpj">CNPJ</label>
+                                        <label for="cpf_cnpj" class="form-label label-cpf-cnpj">CNPJ<span class="obrigatorio"> *</span></label>
                                         <input type="text" class="form-control cnpj" id="cpf_cnpj" name="cpf_cnpj"
                                                value="<?= $fornecedor->cpf_cnpj ?? '' ?>">
                                     </div>
                                     <div class="col-md-3">
-                                        <label for="razao_social" class="form-label">Razão Social</label>
+                                        <label for="razao_social" class="form-label">Razão Social<span class="obrigatorio"> *</span></label>
                                         <input type="text" class="form-control" id="razao_social" name="razao_social"
                                                value="<?= $fornecedor->razao_social ?? '' ?>">
                                     </div>
@@ -175,27 +175,51 @@
                                         <label for="cidade" class="form-label">Cidade</label>
                                         <select class="form-select" id="cidade" name="cidade"></select>
                                     </div>
-
-                                    <div class="col-md-2">
-                                        <label for="inscricao_estadual" class="form-label">Inscrição Estadual</label>
-                                        <input type="text" class="form-control" id="inscricao_estadual" name="inscricao_estadual"
-                                               value="<?= $fornecedor->inscricao_estadual ?? '' ?>">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="observacoes" class="form-label">Observações</label>
-                                        <textarea class="form-control" id="observacoes" name="observacoes" rows="4"><?= $fornecedor->observacoes ?? '' ?></textarea>
-                                    </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="estoque" role="tabpanel">
-                                <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's
-                                    organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify
-                                    pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy
-                                    hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred
-                                    pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel
-                                    fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of
-                                    them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray
-                                    yr.</p>
+                            <div class="tab-pane fade" id="contato" role="tabpanel">
+                                <div class="row g-3">
+                                    <div class="col-md-3">
+                                        <label for="telefone" class="form-label">Telefone</label>
+                                        <input type="text" class="form-control telefone" id="telefone" name="telefone"
+                                               value="<?= $fornecedor->telefone ?? '' ?>">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="telefone2" class="form-label">Telefone 2</label>
+                                        <input type="text" class="form-control telefone" id="telefone2" name="telefone2"
+                                               value="<?= $fornecedor->telefone2 ?? '' ?>">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="celular" class="form-label">Celular</label>
+                                        <input type="text" class="form-control telefone" id="celular" name="celular"
+                                               value="<?= $fornecedor->celular ?? '' ?>">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="celular2" class="form-label">Celular 2</label>
+                                        <input type="text" class="form-control telefone" id="celular2" name="celular2"
+                                               value="<?= $fornecedor->celular2 ?? '' ?>">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email"
+                                               value="<?= $fornecedor->email ?? '' ?>">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="responsavel" class="form-label">Responsável</label>
+                                        <input type="text" class="form-control" id="responsavel" name="responsavel"
+                                               value="<?= $fornecedor->responsavel ?? '' ?>">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="responsavel_celular" class="form-label">Celular do Responsável</label>
+                                        <input type="text" class="form-control" id="responsavel_celular" name="responsavel_celular"
+                                               value="<?= $fornecedor->responsavel_celular ?? '' ?>">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="responsavel_email" class="form-label">Email do Responsável</label>
+                                        <input type="email" class="form-control" id="responsavel_email" name="responsavel_email"
+                                               value="<?= $fornecedor->responsavel_email ?? '' ?>">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12">
