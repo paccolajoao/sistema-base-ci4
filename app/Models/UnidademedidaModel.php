@@ -98,8 +98,8 @@ class UnidademedidaModel extends Model
 
         // se for relacional, insiro as relações
         $this->db->table('unidadesmedida_relacional')
-            ->where('idUnidadeMedidaRelacional', $idUM)
-            ->delete();
+                 ->where('idUnidadeMedidaRelacional', $idUM)
+                 ->delete();
         if ($data['isRelacional'] == '1') {
             $insertUMRelacional = [
                 'idUnidadeMedidaRelacional' => $idUM,
@@ -123,13 +123,28 @@ class UnidademedidaModel extends Model
     public function getUMCompleto ($idUnidadeMedida) {
         $this->select();
         $this->select('umr.idUnidadeMedidaBase as UMBase,
-                                 umr.quantidade');
+                             umr.quantidade');
         $this->join('unidadesmedida_relacional as umr', 'umr.idUnidadeMedidaRelacional = idUnidadeMedida', 'left');
         $this->where('idUnidadeMedida', $idUnidadeMedida);
         return $this->findAll()[0];
     }
 
     public function deleteUnidadeMedida ($idUnidadeMedida) {
+        // Todas as unidades de medidas relacionais passam a ser não relacionais
+        $query = $this->db
+                  ->table('unidadesmedida_relacional as umr')
+                  ->select('umr.idUnidadeMedidaRelacional')
+                  ->where('umr.idUnidadeMedidaBase', $idUnidadeMedida)
+                  ->get();
+        foreach ($query->getResultArray() as $row) {
+            $this->set('isRelacional', '0');
+            $this->from('unidadesmedida');
+            $this->where('idUnidadeMedida', $row['idUnidadeMedidaRelacional']);
+            $this->update();
+        }
+
+        // Deleto a UM
+        $this->select();
         $this->where('idUnidadeMedida', $idUnidadeMedida);
         $this->delete();
     }

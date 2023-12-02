@@ -104,7 +104,7 @@ class Unidademedida extends BaseController
             }
             $data['updated_at'] = date("Y-m-d H:i:s");
             $data['quantidade'] = formataDecimal($data['quantidade']);
-            $data['idUnidadeMedidaBase'] = $data['UMBase'];
+            $data['idUnidadeMedidaBase'] = $data['UMBase'] ?? 0;
             unset($data['UMBase']);
 
             // construo o vetor para salvar os logs
