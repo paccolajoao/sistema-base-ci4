@@ -111,8 +111,7 @@ class Validation extends BaseConfig
             'errors' => [
                 'required' => 'O campo usuário é obrigatório.',
                 'max_length' => 'Tamanho máximo do campo usuário é 50 caracteres.',
-                'min_length' => 'Tamanho mínimo do campo usuário é 6 caracteres.',
-                'is_unique' => 'Esse usuário já foi cadastrado.'
+                'min_length' => 'Tamanho mínimo do campo usuário é 6 caracteres.'
             ],
         ],
         'password' => [
@@ -151,8 +150,7 @@ class Validation extends BaseConfig
             'errors' => [
                 'required' => 'O campo email é obrigatório.',
                 'max_length' => 'Tamanho máximo do campo email senha é 50 caracteres.',
-                'valid_email' => 'O email não é válido.',
-                'is_unique' => 'Esse email já foi cadastrado.'
+                'valid_email' => 'O email não é válido.'
             ],
         ],
         'foto_perfil' => [
@@ -227,12 +225,17 @@ class Validation extends BaseConfig
     ];
 
     public array $fornecedorRules = [
+        // Dados gerais
+        'idFornecedor' => [
+            'rules' => 'permit_empty|is_natural_no_zero'
+        ],
         'cpf_cnpj' => [
-            'rules' => 'required|max_length[18]|min_length[14]|is_unique[fornecedores.cpf_cnpj]',
+            'rules' => 'required|max_length[18]|min_length[14]|is_unique[fornecedores.cpf_cnpj,fornecedores.idFornecedor,{idFornecedor}]',
             'errors' => [
                 'required' => 'O campo CPF/CNPJ é obrigatório.',
                 'max_length' => 'Tamanho máximo do campo CPF/CNPJ é 18 caracteres.',
-                'min_length' => 'Tamanho mínimo do campo CPF/CNPJ é 14 caracteres.'
+                'min_length' => 'Tamanho mínimo do campo CPF/CNPJ é 14 caracteres.',
+                'is_unique' => 'CPF/CNPJ já inserido para outro fornecedor'
             ],
         ],
         'razao_social' => [
@@ -292,6 +295,92 @@ class Validation extends BaseConfig
             'rules' => 'max_length[500]',
             'errors' => [
                 'max_length' => 'Tamanho máximo do campo observações é 500 caracteres.',
+            ],
+        ],
+        //Endereço
+        'cep' => [
+            'rules' => 'max_length[9]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo cep é 9 caracteres.',
+            ],
+        ],
+        'endereco' => [
+            'rules' => 'max_length[250]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo endereço é 250 caracteres.',
+            ],
+        ],
+        'numero' => [
+            'rules' => 'max_length[10]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo número é 10 caracteres.',
+            ],
+        ],
+        'bairro' => [
+            'rules' => 'max_length[50]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo bairro é 50 caracteres.',
+            ],
+        ],
+        'complemento' => [
+            'rules' => 'max_length[50]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo complemento é 50 caracteres.',
+            ],
+        ],
+        'cidade' => [
+            'rules' => 'permit_empty|numeric',
+            'errors' => [
+                'numeric' => 'A cidade selecionada está incorreta.',
+            ],
+        ],
+        //Contato
+        'telefone' => [
+            'rules' => 'max_length[15]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo telefone é 15 caracteres.',
+            ],
+        ],
+        'telefone2' => [
+            'rules' => 'max_length[15]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo telefone 2 é 15 caracteres.',
+            ],
+        ],
+        'celular' => [
+            'rules' => 'max_length[15]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo celular é 15 caracteres.',
+            ],
+        ],
+        'celular2' => [
+            'rules' => 'max_length[15]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo celular 2 é 15 caracteres.',
+            ],
+        ],
+        'email' => [
+            'rules' => 'max_length[80]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo email é 80 caracteres.',
+            ],
+        ],
+        'responsavel' => [
+            'rules' => 'max_length[15]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo responsável é 50 caracteres.',
+            ],
+        ],
+        'responsavel_celular' => [
+            'rules' => 'max_length[15]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo celular do responsável é 15 caracteres.',
+            ],
+        ],
+        'responsavel_email' => [
+            'rules' => 'max_length[80]',
+            'errors' => [
+                'max_length' => 'Tamanho máximo do campo email do responsável é 80 caracteres.',
             ],
         ],
     ];

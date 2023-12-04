@@ -183,7 +183,8 @@ function setSelect2Cidade(params) {
         url: params.url,
         method: "POST",
         data: {
-            "ibge": params.ibge
+            "ibge": params.ibge,
+            "id": params.id
         }
     });
 
@@ -227,6 +228,6 @@ function setSelect2UM(params) {
     });
 
     request.fail(function (jqXHR, textStatus) {
-        alert("Request failed search cidade: " + textStatus);
+        alert("Request failed search unidade medida: " + textStatus);
     });
 }

@@ -27,7 +27,7 @@ class Produto extends BaseController
 
     public function index()
     {
-        $data['title'] = ucfirst("produtos");
+        $data['title'] = 'Produtos';
         return view("pages/produtos/index", $data);
     }
 
@@ -79,7 +79,7 @@ class Produto extends BaseController
      */
     public function add($idProduto = null)
     {
-        $data['title'] = ucfirst("adicionar produto");
+        $data['title'] = 'Adicionar Produto';
         // se tiver um id de usuário, é editar, então tras os dados na tela
         if (!empty($idProduto)) {
             $filter = [
@@ -87,6 +87,7 @@ class Produto extends BaseController
                 'status' => 'all'
             ];
             $data['produto'] = $this->produtoModel->getProdutos($filter);
+            $data['title'] = 'Editar Produto';
         }
         return view("pages/produtos/add", $data);
     }

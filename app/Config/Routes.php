@@ -58,6 +58,8 @@ $routes->group('select2', static function ($routes) {
     $routes->post('select2Cidades', [CreateSelect2::class, 'select2Cidades']);
     $routes->get('select2UnidadeMedida', [CreateSelect2::class, 'select2UnidadeMedida']);
     $routes->post('select2UnidadeMedida', [CreateSelect2::class, 'select2UnidadeMedida']);
+    $routes->get('select2Produtos', [CreateSelect2::class, 'select2Produtos']);
+    $routes->post('select2Produtos', [CreateSelect2::class, 'select2Produtos']);
 });
 
 /*
@@ -99,6 +101,9 @@ $routes->group('fornecedores', static function ($routes) {
     $routes->post('create', [Fornecedor::class, 'createFornecedor']);
     $routes->post('create/(:num)', [Fornecedor::class, 'createFornecedor']);
     $routes->post('delete/(:num)', [Fornecedor::class, 'deleteFornecedor']);
+    $routes->post('deleteProdutoFornecedor/(:num)', [Fornecedor::class, 'deleteProdutoFornecedor']);
+    $routes->get('fornecedor_produtos/(:num)', [Fornecedor::class, 'getFornecedorProdutos']);
+    $routes->post('add_fornecedor_produto/(:num)/(:num)', [Fornecedor::class, 'createFornecedorProduto']);
 });
 
 /*

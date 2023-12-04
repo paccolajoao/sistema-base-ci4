@@ -30,8 +30,8 @@ class CreateSelect2 extends BaseController
         if (!empty($this->request->getVar('ibge'))) {
             $builder->where('c.ibge', $this->request->getVar('ibge'));
         }
-        if (!empty($this->request->getVar('idCidade'))) {
-            $builder->where('c.idCidade', $this->request->getVar('idCidade'));
+        if (!empty($this->request->getVar('id'))) {
+            $builder->where('c.idCidade', $this->request->getVar('id'));
         }
         $builder->orderBy('c.nome', '');
         $query = $builder->get()->getResult('array');
@@ -50,6 +50,24 @@ class CreateSelect2 extends BaseController
             $builder->where('um.idUnidadeMedida', $this->request->getVar('idUnidadeMedida'));
         }
         $builder->orderBy('um.nome', '');
+        $query = $builder->get()->getResult('array');
+        return json_encode($query);
+    }
+
+    public function select2Produtos()
+    {
+        $builder = $this->db->table('produtos as prd');
+        $builder->select('prd.idProduto as id, 
+                          nome  as text');
+        $builder->where('prd.ativo', 1);
+        if (!empty($this->request->getVar('search'))) {
+            $builder->like('prd.nome', $this->request->getVar('search'));
+        }
+        if (!empty($this->request->getVar('idProduto'))) {
+            $builder->where('prd.idProduto', $this->request->getVar('idProduto'));
+        }
+        $builder->limit(10);
+        $builder->orderBy('prd.nome', '');
         $query = $builder->get()->getResult('array');
         return json_encode($query);
     }

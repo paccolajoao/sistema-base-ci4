@@ -35,11 +35,13 @@
                 <ul>
                     <li> <a href="icons-line-icons.html"><span class="material-symbols-outlined">arrow_right</span>Clientes</a>
                     </li>
-                    <li> <a href="icons-boxicons.html"><span class="material-symbols-outlined">arrow_right</span>Estoque</a>
+                    <li> <a href="icons-boxicons.html"><span class="material-symbols-outlined">arrow_right</span>Depósitos</a>
                     </li>
                     <li> <a href="<?= base_url('fornecedores') ?>"><span class="material-symbols-outlined">arrow_right</span>Fornecedores</a>
                     </li>
                     <li> <a href="<?= base_url('produtos') ?>"><span class="material-symbols-outlined">arrow_right</span>Produtos</a>
+                    </li>
+                    <li> <a href="<?= base_url('produtos') ?>"><span class="material-symbols-outlined">arrow_right</span>Projetos</a>
                     </li>
                     <li> <a href="icons-feather-icons.html"><span class="material-symbols-outlined">arrow_right</span>Serviços</a>
                     </li>

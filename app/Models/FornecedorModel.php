@@ -73,7 +73,58 @@ class FornecedorModel extends Model
 
     }
 
+    /**
+     * Retorna todos os produtos relacionados ao fornecedor
+     * @return array|mixed
+     */
+    public function getFornecedorProdutos ($idFornecedor = null) {
+        $qry = $this->db->table('produtos as prd')
+                        ->select('prd.idProduto as idProduto, 
+                                        prdf.idProdutoFornecedor as idProdutoFornecedor,
+                                        prd.codigo as codProduto,
+                                        prd.nome as nomeProduto,
+                                        null as acao')
+                        ->join('produtos_fornecedores as prdf', 'prd.idProduto = prdf.idProduto', 'inner')
+                        ->where('prd.ativo', 1)
+                        ->where('prdf.idFornecedor', $idFornecedor)
+                        ->get();
+
+        return $qry->getResultObject();
+    }
+
     public function createFornecedor ($data) {
         $this->upsert($data);
+    }
+
+    public function createFornecedorProduto ($data) {
+        $this->db->table('produtos_fornecedores')
+                 ->upsert($data);
+    }
+
+    public function getFornecedorCompleto ($idFornecedor) {
+        $this->select();
+        $this->where('idFornecedor', $idFornecedor);
+        return $this->findAll()[0];
+    }
+
+    public function deleteFornecedor ($idFornecedor) {
+        $this->where('idFornecedor', $idFornecedor);
+        $this->delete();
+    }
+
+    public function getDeletedProdutoFornecedor ($idProdutoFornecedor) {
+        $qry = $this->db
+                 ->table('produtos_fornecedores')
+                 ->select()
+                 ->where('idProdutoFornecedor', $idProdutoFornecedor)
+                 ->get();
+        return $qry->getRowArray();
+    }
+
+    public function deleteProdutoFornecedor ($idProdutoFornecedor) {
+        $this->db
+                 ->table('produtos_fornecedores')
+                 ->where('idProdutoFornecedor', $idProdutoFornecedor)
+                 ->delete();
     }
 }

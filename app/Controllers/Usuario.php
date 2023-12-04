@@ -32,7 +32,7 @@ class Usuario extends BaseController
 
     public function add($idUser = null)
     {
-        $data['title'] = ucfirst("adicionar usuário");
+        $data['title'] = 'Adicionar Usuário';
         // se tiver um id de usuário, é editar, então tras os dados na tela
         if (!empty($idUser)) {
             $filter = [
@@ -40,6 +40,7 @@ class Usuario extends BaseController
                 'status' => 'all'
             ];
             $data['usuario'] = $this->usuarioModel->getUsers($filter);
+            $data['title'] = 'Editar Usuário';
         }
         return view("pages/usuario/add", $data);
     }

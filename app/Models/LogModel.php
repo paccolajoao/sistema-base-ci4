@@ -13,7 +13,7 @@ class LogModel extends Model
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['guid', 'data', 'controller', 'metodo', 'dados', 'isError', 'tabela', 'erroTexto', 'operacao'];
+    protected $allowedFields    = ['guid', 'data', 'controller', 'metodo', 'dados', 'isError', 'tabela', 'erroTexto', 'operacao', 'idUsuario'];
 
     // Dates
     protected $useTimestamps = false;

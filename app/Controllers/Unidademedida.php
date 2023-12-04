@@ -22,7 +22,7 @@ class Unidademedida extends BaseController
 
     public function index()
     {
-        $data['title'] = ucfirst("unidades de medida");
+        $data['title'] = 'Unidades de Medida';
         return view("pages/unidadesmedida/index", $data);
     }
 
@@ -69,7 +69,7 @@ class Unidademedida extends BaseController
 
     public function add($idUnidadeMedida = null)
     {
-        $data['title'] = ucfirst("adicionar unidade de medida");
+        $data['title'] = 'Adicionar Unidade de Medida';
         // se tiver um id de unidade de medida, é editar, então tras os dados na tela
         if (!empty($idUnidadeMedida)) {
             $filter = [
@@ -78,6 +78,7 @@ class Unidademedida extends BaseController
                 'ativo' => 'all'
             ];
             $data['unidademedida'] = $this->unidademedidaModel->getUnidadesMedida($filter);
+            $data['title'] = 'Editar Unidade de Medida';
         }
         return view("pages/unidadesmedida/add", $data);
     }

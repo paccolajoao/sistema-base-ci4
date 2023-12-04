@@ -54,6 +54,7 @@
                                 </div>
                             </a>
                         </li>
+                        <?php if (!empty($fornecedor)): ?>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" data-bs-toggle="tab" href="#produtos" role="tab" aria-selected="false">
                                 <div class="d-flex align-items-center">
@@ -72,12 +73,13 @@
                                 </div>
                             </a>
                         </li>
+                        <?php endif; ?>
                     </ul>
                     <form id="fornecedorData" method="post" enctype="multipart/form-data">
                         <div class="tab-content py-3">
                             <div class="tab-pane fade show active" id="dadosgerais" role="tabpanel">
                                 <div class="row g-3">
-                                    <input type="hidden" id="id_fornecedor" name="id_fornecedor"
+                                    <input type="hidden" id="id_fornecedor" name="idFornecedor"
                                            value="<?= $fornecedor->idFornecedor ?? '' ?>">
                                     <div class="col-md-3">
                                         <label for="ativo" class="form-label">Status</label>
@@ -147,7 +149,7 @@
                                     <div class="col-md-3">
                                         <label for="cep" class="form-label">CEP</label>
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control cep" id="cep" name="cep" aria-describedby="cep_button">
+                                            <input type="text" class="form-control cep" id="cep" name="cep" aria-describedby="cep_button" value="<?= $fornecedor->cep ?? '' ?>">
                                             <button class="btn btn-outline-primary" type="button" id="cep_button"><i class="fa-solid fa-magnifying-glass"></i></button>
                                         </div>
                                     </div>
@@ -173,7 +175,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <label for="cidade" class="form-label">Cidade</label>
-                                        <select class="form-select" id="cidade" name="cidade"></select>
+                                        <select class="form-select" id="cidade" name="cidade" data-idcidade="<?= $fornecedor->cidade ?? '' ?>"></select>
                                     </div>
                                 </div>
                             </div>
@@ -211,13 +213,40 @@
                                     </div>
                                     <div class="col-md-3">
                                         <label for="responsavel_celular" class="form-label">Celular do Responsável</label>
-                                        <input type="text" class="form-control" id="responsavel_celular" name="responsavel_celular"
+                                        <input type="text" class="form-control telefone" id="responsavel_celular" name="responsavel_celular"
                                                value="<?= $fornecedor->responsavel_celular ?? '' ?>">
                                     </div>
                                     <div class="col-md-3">
                                         <label for="responsavel_email" class="form-label">Email do Responsável</label>
                                         <input type="email" class="form-control" id="responsavel_email" name="responsavel_email"
                                                value="<?= $fornecedor->responsavel_email ?? '' ?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="produtos" role="tabpanel">
+                                <div class="row g-3">
+                                    <!-- Button trigger modal -->
+                                    <div class="col-md-6">
+                                        <label for="produto" class="form-label">Produto</label>
+                                        <div class="input-group mb-3">
+                                            <select class="form-select" id="produto" name="produto"></select>
+                                            <button class="btn btn-outline-success" type="button" id="addProdutoFornecedor"><i class="fa-solid fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table id="dt_produtos" class="table table-striped table-bordered" style="width:100%">
+                                                <thead>
+                                                <tr>
+                                                    <th>ID Produto</th>
+                                                    <th>Código do Produto</th>
+                                                    <th>Nome do Produto</th>
+                                                    <th>Ação</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

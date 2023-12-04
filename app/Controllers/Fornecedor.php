@@ -26,7 +26,7 @@ class Fornecedor extends BaseController
 
     public function index()
     {
-        $data['title'] = ucfirst("fornecedores");
+        $data['title'] = 'Fornecedores';
         return view("pages/fornecedores/index", $data);
     }
 
@@ -74,17 +74,43 @@ class Fornecedor extends BaseController
         return view("pages/errors/erro404");
     }
 
+    /**
+     * [AJAX] Função retorna os produtos daquele fornecedor
+     */
+    public function getFornecedorProdutos($idFornecedor = null)
+    {
+        if ($this->request->isAJAX()) {
+            $ret = $this->fornecedorModel
+                        ->getFornecedorProdutos($idFornecedor);
+
+            $data['data'] = [];
+            foreach ($ret as $row) {
+                $data['data'][] = [
+                    (int)$row->idProduto,
+                    $row->codProduto,
+                    $row->nomeProduto,
+                    '
+                        <button type="button" class="btn btn-sm btn-danger excluir-produto-fornecedor" data-id="' . (int)$row->idProdutoFornecedor . '"><i class="fa-solid fa-trash-can"></i></button>
+                    '
+                ];
+            }
+            return json_encode($data);
+        }
+        return view("pages/errors/erro404");
+    }
+
     public function add($idFornecedor = null)
     {
-        $data['title'] = ucfirst("adicionar fornecedor");
+        $data['title'] = 'Adicionar Fornecedor';
         // se tiver um id de usuário, é editar, então tras os dados na tela
         if (!empty($idFornecedor)) {
             $filter = [
-                'idProduto' => $idFornecedor,
+                'idFornecedor' => $idFornecedor,
                 'status' => 'all',
                 'tipo' => 'all'
             ];
-            $data['produto'] = $this->fornecedorModel->getFornecedores($filter);
+            $data['fornecedor'] = $this->fornecedorModel->getFornecedores($filter);
+            $data['title'] = 'Editar Fornecedor';
         }
         return view("pages/fornecedores/add", $data);
     }
@@ -136,5 +162,113 @@ class Fornecedor extends BaseController
         } else {
             return view("pages/errors/erro404");
         }
+    }
+
+    public function createFornecedorProduto($idFornecedor = null, $idProduto = null)
+    {
+        if ($this->request->isAJAX()) {
+            if (empty($idFornecedor) || empty($idProduto)) {
+                return ['msg' => 'error', 'error' => 'Preencha corretamente o produto para adicionar'];
+            }
+            $data['idProduto'] = $idProduto;
+            $data['idFornecedor'] = $idFornecedor;
+
+            // construo o vetor para salvar os logs
+            $logParams = [
+                "guid" => getGUID(),
+                "data" => date("Y-m-d H:i:s"),
+                "controller" => $this->router->controllerName(),
+                "metodo" => $this->router->methodName(),
+                "dados" => json_encode($data),
+                "tabela" => 'produtos_fornecedores',
+                "idUsuario" => infoUsuarioLogado()->idUser,
+                "operacao" => 'i'
+            ];
+            try {
+                $this->fornecedorModel->createFornecedorProduto($data);
+                $logParams['isError'] = false;
+                $return = ['msg' => 'success'];
+            } catch (DatabaseException $e) {
+                $logParams['isError'] = true;
+                $logParams['erroTexto'] = $e->getMessage();
+                $return = ['msg' => 'error', 'error' => $e->getMessage()];
+            }
+            $this->logs->save($logParams);
+            return json_encode($return);
+        } else {
+            return view("pages/errors/erro404");
+        }
+    }
+
+    public function deleteFornecedor($idFornecedor = null)
+    {
+        if ($this->request->isAJAX()) {
+            // construo o vetor para salvar os logs
+            $logParams = [
+                "guid" => getGUID(),
+                "data" => date("Y-m-d H:i:s"),
+                "controller" => $this->router->controllerName(),
+                "metodo" => $this->router->methodName(),
+                "dados" => $this->getDeletedFornecedor($idFornecedor),
+                "tabela" => 'fornecedores',
+                "idUsuario" => infoUsuarioLogado()->idUser,
+                "operacao" => 'd'
+            ];
+            try {
+                $this->fornecedorModel->deleteFornecedor($idFornecedor);
+                $logParams['isError'] = false;
+                $return = ['msg' => 'success'];
+            } catch (DatabaseException $e) {
+                $logParams['isError'] = true;
+                $logParams['erroTexto'] = $e->getMessage();
+                $return = ['msg' => 'error', 'error' => $e->getMessage()];
+            }
+            $this->logs->save($logParams);
+            return json_encode($return);
+        } else {
+            return view("pages/errors/erro404");
+        }
+    }
+
+    public function deleteProdutoFornecedor($idProdutoFornecedor = null)
+    {
+        if ($this->request->isAJAX()) {
+            // construo o vetor para salvar os logs
+            $logParams = [
+                "guid" => getGUID(),
+                "data" => date("Y-m-d H:i:s"),
+                "controller" => $this->router->controllerName(),
+                "metodo" => $this->router->methodName(),
+                "dados" => $this->getDeletedProdutoFornecedor($idProdutoFornecedor),
+                "tabela" => 'produtos_fornecedores',
+                "idUsuario" => infoUsuarioLogado()->idUser,
+                "operacao" => 'd'
+            ];
+            try {
+                $this->fornecedorModel->deleteProdutoFornecedor($idProdutoFornecedor);
+                $logParams['isError'] = false;
+                $return = ['msg' => 'success'];
+            } catch (DatabaseException $e) {
+                $logParams['isError'] = true;
+                $logParams['erroTexto'] = $e->getMessage();
+                $return = ['msg' => 'error', 'error' => $e->getMessage()];
+            }
+            $this->logs->save($logParams);
+            return json_encode($return);
+        } else {
+            return view("pages/errors/erro404");
+        }
+    }
+
+    public function getDeletedFornecedor($idFornecedor) {
+        $ret = $this->fornecedorModel
+                    ->getFornecedorCompleto($idFornecedor);
+        return json_encode($ret);
+    }
+
+    public function getDeletedProdutoFornecedor($idFornecedor) {
+        $ret = $this->fornecedorModel
+                    ->getDeletedProdutoFornecedor($idFornecedor);
+        return json_encode($ret);
     }
 }
